@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Screen 21: conversation with Aisha Khan. Incoming bubbles on the left, ours (teal) on the right. -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_max="@dimen/content_max_width">
+
+        <!-- Top bar: contact and call buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
+
+            <ImageView
+                android:id="@+id/btnBack"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="Back"
+                android:src="@drawable/ic_back"
+                app:tint="@color/text_primary" />
+
+            <RelativeLayout
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="12dp">
+
+                <TextView
+                    style="@style/Kin.Avatar"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:backgroundTint="@color/avatar_crimson"
+                    android:text="AK"
+                    android:textSize="15sp" />
+
+                <View
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/bg_react_like"
+                    android:backgroundTint="@color/online" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Kin.Text.Name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Aisha Khan"
+                    android:textSize="18sp" />
+
+                <TextView
+                    style="@style/Kin.Text.Secondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Active now"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/btnCall"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:contentDescription="Voice call"
+                android:src="@drawable/ic_call"
+                app:tint="@color/teal" />
+
+            <ImageView
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_marginStart="18dp"
+                android:contentDescription="Video call"
+                android:src="@drawable/ic_video_call"
+                app:tint="@color/teal" />
+
+            <ImageView
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_marginStart="18dp"
+                android:contentDescription="Conversation info"
+                android:src="@drawable/ic_info"
+                app:tint="@color/teal" />
+        </LinearLayout>
+
+        <View
+            style="@style/Kin.Divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="12dp">
+
+                <!-- Contact intro -->
+                <TextView
+                    style="@style/Kin.Avatar"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="16dp"
+                    android:backgroundTint="@color/avatar_crimson"
+                    android:text="AK"
+                    android:textSize="28sp" />
+
+                <TextView
+                    style="@style/Kin.Text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:text="Aisha Khan"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    style="@style/Kin.Text.Secondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="6dp"
+                    android:text="You're friends on Kinnect · Lives in Karachi"
+                    android:textSize="15sp" />
+
+                <TextView
+                    style="@style/Kin.Text.Secondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="22dp"
+                    android:letterSpacing="0.04"
+                    android:text="TODAY 4:49 PM"
+                    android:textStyle="bold" />
+
+                <!-- Incoming messages (Aisha) -->
+                <include
+                    android:id="@+id/msgHey"
+                    layout="@layout/item_message_received"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="48dp"
+                    android:layout_marginTop="10dp" />
+
+                <include
+                    android:id="@+id/msgTable"
+                    layout="@layout/item_message_received"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="48dp"
+                    android:layout_marginTop="2dp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="2dp"
+                    android:gravity="bottom"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/Kin.Avatar"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:backgroundTint="@color/avatar_crimson"
+                        android:text="AK"
+                        android:textSize="10sp" />
+
+                    <include
+                        android:id="@+id/msgBring"
+                        layout="@layout/item_message_received"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp" />
+                </LinearLayout>
+
+                <!-- Our messages -->
+                <include
+                    android:id="@+id/msgYes"
+                    layout="@layout/item_message_sent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="12dp" />
+
+                <!-- A reaction hangs off the corner of this bubble -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="12dp"
+                    android:orientation="vertical">
+
+                    <include
+                        android:id="@+id/msgBatteries"
+                        layout="@layout/item_message_sent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="-11dp"
+                        android:background="@drawable/bg_react_love"
+                        android:elevation="2dp"
+                        android:padding="5dp"
+                        android:src="@drawable/ic_heart_filled"
+                        app:tint="@color/white" />
+                </LinearLayout>
+
+                <TextView
+                    style="@style/Kin.Text.Secondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginEnd="12dp"
+                    android:text="You replied to Aisha"
+                    android:textSize="13sp" />
+
+                <TextView
+                    style="@style/Kin.Text.Secondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="12dp"
+                    android:background="@drawable/bg_round_18"
+                    android:backgroundTint="@color/chip"
+                    android:paddingStart="14dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="14dp"
+                    android:paddingBottom="8dp"
+                    android:text="Lina booked the table for 8"
+                    android:textSize="16sp" />
+
+                <include
+                    android:id="@+id/msgPerfect"
+                    layout="@layout/item_message_sent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="12dp" />
+
+                <ImageView
+                    android:layout_width="200dp"
+                    android:layout_height="140dp"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="12dp"
+                    android:background="@drawable/bg_round_18"
+                    android:clipToOutline="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/art_lilac" />
+
+                <!-- Seen marker -->
+                <View
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginEnd="12dp"
+                    android:background="@drawable/bg_circle"
+                    android:backgroundTint="@color/avatar_crimson" />
+
+                <!-- Typing indicator -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:gravity="bottom"
+                    android:orientation="horizontal"
+                    android:paddingStart="12dp">
+
+                    <TextView
+                        style="@style/Kin.Avatar"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:backgroundTint="@color/avatar_crimson"
+                        android:text="AK"
+                        android:textSize="10sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_chip"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="14dp"
+                        android:paddingEnd="14dp">
+
+                        <View
+                            android:layout_width="8dp"
+                            android:layout_height="8dp"
+                            android:background="@drawable/bg_circle"
+                            android:backgroundTint="#7A7570" />
+
+                        <View
+                            android:layout_width="8dp"
+                            android:layout_height="8dp"
+                            android:layout_marginStart="5dp"
+                            android:background="@drawable/bg_circle"
+                            android:backgroundTint="#9C968F" />
+
+                        <View
+                            android:layout_width="8dp"
+                            android:layout_height="8dp"
+                            android:layout_marginStart="5dp"
+                            android:background="@drawable/bg_circle"
+                            android:backgroundTint="#C8C3BC" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <!-- Message bar -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingTop="6dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="10dp">
+
+            <ImageView
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:contentDescription="More options"
+                android:src="@drawable/ic_add_circle"
+                app:tint="@color/teal" />
+
+            <ImageView
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_marginStart="14dp"
+                android:contentDescription="Camera"
+                android:src="@drawable/ic_camera"
+                app:tint="@color/teal" />
+
+            <ImageView
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_marginStart="14dp"
+                android:contentDescription="Photos"
+                android:src="@drawable/ic_gallery"
+                app:tint="@color/teal" />
+
+            <ImageView
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_marginStart="14dp"
+                android:contentDescription="Voice message"
+                android:src="@drawable/ic_mic"
+                app:tint="@color/teal" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_search"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingEnd="10dp">
+
+                <EditText
+                    style="@style/Kin.Input"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Aa"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:textSize="18sp" />
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_smile"
+                    app:tint="@color/teal" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="12dp"
+                android:contentDescription="Send a like"
+                android:src="@drawable/ic_like"
+                app:tint="@color/teal" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
