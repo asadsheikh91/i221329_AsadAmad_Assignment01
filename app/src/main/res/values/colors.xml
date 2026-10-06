@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Brand -->
+    <color name="teal">#0B5F63</color>
+    <color name="teal_tint">#E4EEEF</color>
+    <color name="rust">#BC4524</color>
+
+    <!-- Surfaces -->
+    <color name="cream">#F5F1EE</color>
+    <color name="chip">#EDEAE5</color>
+    <color name="band">#E9E2DC</color>
+    <color name="border">#D4D0CD</color>
+    <color name="divider">#E4E0DB</color>
+    <color name="strength_empty">#D8D4CF</color>
+
+    <!-- Text -->
+    <color name="text_primary">#1F1C1A</color>
+    <color name="text_secondary">#5E5A55</color>
+    <color name="text_hint">#8A857F</color>
+
+    <!-- Reactions and status -->
+    <color name="love">#C63848</color>
+    <color name="gold">#CC850F</color>
+    <color name="online">#329D57</color>
+    <color name="call_red">#C62829</color>
+    <color name="call_button">#2C7679</color>
+
+    <!-- Avatar palette -->
+    <color name="avatar_purple">#7A4E81</color>
+    <color name="avatar_indigo">#4C518B</color>
+    <color name="avatar_green">#2F6B51</color>
+    <color name="avatar_brown">#8A5A2C</color>
+    <color name="avatar_crimson">#9B3D4F</color>
+    <color name="avatar_steel">#3F6E8C</color>
+    <color name="avatar_olive">#6C5B30</color>
+
+    <!-- Dark screens (camera and stories) -->
+    <color name="dark_bg">#121212</color>
+    <color name="dark_pill">#2B2724</color>
+    <color name="scrim">#4F000000</color>
+    <color name="overlay_button">#66000000</color>
+    <color name="overlay_light">#33FFFFFF</color>
+</resources>

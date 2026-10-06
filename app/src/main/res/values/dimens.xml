@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Widest the content column may grow on tablets and in landscape -->
+    <dimen name="content_max_width">640dp</dimen>
+    <dimen name="content_max_width_narrow">480dp</dimen>
+
+    <!-- Height of the five-tab bar and of the round header buttons -->
+    <dimen name="tab_height">48dp</dimen>
+    <dimen name="icon_button_size">40dp</dimen>
+
+    <!-- Side padding used by most screens -->
+    <dimen name="screen_padding">16dp</dimen>
+</resources>

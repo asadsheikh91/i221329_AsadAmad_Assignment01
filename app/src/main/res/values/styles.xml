@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Empty root so the dotted names below (Kin.Text, Kin.Button, ...) have a parent -->
+    <style name="Kin" />
+
+    <!-- ===== Text ===== -->
+    <style name="Kin.Text">
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="Kin.Text.Title">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Kin.Text.Heading">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Kin.Text.Name">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Kin.Text.Secondary">
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Kin.Text.Small">
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Kin.Text.Link">
+        <item name="android:textColor">@color/teal</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- ===== Buttons ===== -->
+    <style name="Kin.Button" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/bg_button_primary</item>
+        <item name="android:backgroundTint">@color/teal</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+
+    <style name="Kin.Button.Grey">
+        <item name="android:backgroundTint">@color/chip</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+
+    <style name="Kin.Button.Outline">
+        <item name="android:background">@drawable/bg_button_secondary</item>
+        <item name="android:backgroundTint">@null</item>
+        <item name="android:textColor">@color/teal</item>
+    </style>
+
+    <!-- ===== Misc building blocks ===== -->
+    <!-- Round grey icon button used in the page headers -->
+    <style name="Kin.IconButton">
+        <item name="android:background">@drawable/bg_circle</item>
+        <item name="android:backgroundTint">@color/chip</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:tint">@color/text_primary</item>
+    </style>
+
+    <!-- Initials avatar; size, colour and text size are set where it is used -->
+    <style name="Kin.Avatar">
+        <item name="android:background">@drawable/bg_circle</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="Kin.Divider">
+        <item name="android:background">@color/divider</item>
+    </style>
+
+    <!-- Bare input: the surrounding box draws the border -->
+    <style name="Kin.Input">
+        <item name="android:background">@null</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textColorHint">@color/text_hint</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Small label that sits above an input value -->
+    <style name="Kin.FieldLabel">
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Tab icon in the five-tab bar -->
+    <style name="Kin.TabIcon">
+        <item name="android:tint">@color/text_secondary</item>
+    </style>
+</resources>

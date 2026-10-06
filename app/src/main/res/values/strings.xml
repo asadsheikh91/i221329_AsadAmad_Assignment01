@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Kinnect</string>
+
+    <!-- Strings with bold parts. Plain labels live directly in the layouts. -->
+    <string name="home_post_header"><b>Lina Marsh</b> is at <b>Clifton Beach</b></string>
+    <string name="friend_count_mine"><b><font color="#1F1C1A">834</font></b> friends</string>
+    <string name="friend_count_other"><b><font color="#1F1C1A">1,204</font></b> friends · <b><font color="#1F1C1A">38</font></b> mutual</string>
+    <string name="mutual_friends_line">Friends with <b><font color="#1F1C1A">Aisha Khan</font></b>, <b><font color="#1F1C1A">Lina Marsh</font></b> and <b><font color="#1F1C1A">36 others</font></b></string>
+    <string name="detail_work_mine">Designer at <b>Pixsellz</b></string>
+    <string name="detail_study_mine">Studied at <b>FAST-NUCES</b></string>
+    <string name="detail_live_mine">Lives in <b>Karachi, Pakistan</b></string>
+    <string name="detail_work_other">Photographer at <b>Studio Nocturne</b></string>
+    <string name="detail_live_other">Lives in <b>Karachi, Pakistan</b></string>
+    <string name="signup_login_link">Already have an account? <b><font color="#0B5F63">Log in</font></b></string>
+    <string name="comments_replying_to">Replying to <b>Aisha Khan</b></string>
+    <string name="notif_reacted"><b>Aisha Khan</b> and <b>32 others</b> reacted to your photo.</string>
+    <string name="notif_request"><b>Sara Iqbal</b> sent you a friend request.</string>
+    <string name="notif_reply"><b>Zain Raza</b> replied to your comment: “next time invite the rest of us”</string>
+    <string name="notif_group">New post in <b>SMD Class of 2026</b>: “Assignment 1 is out. Start early.”</string>
+    <string name="notif_tagged"><b>Hamza Ali</b> tagged you in a post.</string>
+    <string name="notif_liked"><b>Lina Marsh</b> liked your story.</string>
+    <string name="comment_mention"><font color="#0B5F63"><b>@Lina Marsh</b></font> next time invite the rest of us</string>
+</resources>

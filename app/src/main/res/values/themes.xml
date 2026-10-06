@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Light AppCompat theme: the design has no dark mode, so we never follow the system night setting. -->
+    <style name="Theme.SMDASS1" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/teal</item>
+        <item name="colorPrimaryDark">@color/teal</item>
+        <item name="colorAccent">@color/teal</item>
+        <item name="android:windowBackground">@drawable/bg_app</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowAnimationStyle">@style/ScreenTransition</item>
+    </style>
+
+    <!-- Teal full-screen pages (splash and voice call): light status bar icons. -->
+    <style name="Theme.SMDASS1.Teal">
+        <item name="android:windowBackground">@color/teal</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+    <!-- Black pages (camera, story editor and story viewers): light status bar icons. -->
+    <style name="Theme.SMDASS1.Dark">
+        <item name="android:windowBackground">@color/dark_bg</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+    <!-- Slide in from the right when opening a screen, slide out to the right when going back. -->
+    <style name="ScreenTransition" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/fade_out</item>
+        <item name="android:activityCloseEnterAnimation">@anim/fade_in</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
+    </style>
+</resources>
