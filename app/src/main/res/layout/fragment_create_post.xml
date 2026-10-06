@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Screen 7: create post. The options sheet sits at the bottom of the scrolling page. -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_max="@dimen/content_max_width">
+
+        <!-- Top bar -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingEnd="12dp">
+
+            <ImageView
+                android:id="@+id/btnClose"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="Close"
+                android:src="@drawable/ic_close"
+                app:tint="@color/text_primary" />
+
+            <TextView
+                style="@style/Kin.Text.Heading"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:layout_weight="1"
+                android:text="Create post" />
+
+            <Button
+                android:id="@+id/btnPost"
+                style="@style/Kin.Button"
+                android:layout_width="67dp"
+                android:layout_height="36dp"
+                android:text="Post" />
+        </LinearLayout>
+
+        <View
+            style="@style/Kin.Divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Author and audience -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingTop="14dp"
+                    android:paddingEnd="16dp">
+
+                    <TextView
+                        style="@style/Kin.Avatar"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:backgroundTint="@color/teal"
+                        android:text="JW"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/Kin.Text.Name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Jacob West"
+                            android:textSize="17sp" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="28dp"
+                                android:background="@drawable/bg_pill_tint_outline"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                android:paddingStart="10dp"
+                                android:paddingEnd="6dp">
+
+                                <ImageView
+                                    android:layout_width="14dp"
+                                    android:layout_height="14dp"
+                                    android:src="@drawable/ic_globe"
+                                    app:tint="@color/teal" />
+
+                                <TextView
+                                    style="@style/Kin.Text.Link"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="4dp"
+                                    android:text="Public"
+                                    android:textSize="14sp" />
+
+                                <ImageView
+                                    android:layout_width="14dp"
+                                    android:layout_height="14dp"
+                                    android:layout_marginStart="2dp"
+                                    android:src="@drawable/ic_chevron_down"
+                                    app:tint="@color/teal" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="28dp"
+                                android:layout_marginStart="6dp"
+                                android:background="@drawable/bg_pill_tint_outline"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                android:paddingStart="10dp"
+                                android:paddingEnd="6dp">
+
+                                <ImageView
+                                    android:layout_width="14dp"
+                                    android:layout_height="14dp"
+                                    android:src="@drawable/ic_add"
+                                    app:tint="@color/teal" />
+
+                                <TextView
+                                    style="@style/Kin.Text.Link"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="4dp"
+                                    android:text="Album"
+                                    android:textSize="14sp" />
+
+                                <ImageView
+                                    android:layout_width="14dp"
+                                    android:layout_height="14dp"
+                                    android:layout_marginStart="2dp"
+                                    android:src="@drawable/ic_chevron_down"
+                                    app:tint="@color/teal" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Post text -->
+                <EditText
+                    android:id="@+id/etPostText"
+                    style="@style/Kin.Input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:gravity="top"
+                    android:hint="What's on your mind?"
+                    android:importantForAutofill="no"
+                    android:inputType="textMultiLine"
+                    android:lineSpacingMultiplier="1.05"
+                    android:text="Weekend plan: coffee, sketching, and absolutely no email."
+                    android:textSize="24sp" />
+
+                <!-- Background colour swatches -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="28dp"
+                    android:orientation="horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
+
+                    <TextView
+                        android:layout_width="34dp"
+                        android:layout_height="34dp"
+                        android:background="@drawable/bg_swatch_none"
+                        android:gravity="center"
+                        android:text="Aa"
+                        android:textColor="@color/text_primary"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="34dp"
+                        android:layout_height="34dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_round_8"
+                        android:backgroundTint="@color/teal" />
+
+                    <View
+                        android:layout_width="34dp"
+                        android:layout_height="34dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_round_8"
+                        android:backgroundTint="@color/rust" />
+
+                    <View
+                        android:layout_width="34dp"
+                        android:layout_height="34dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_round_8"
+                        android:backgroundTint="@color/avatar_indigo" />
+
+                    <View
+                        android:layout_width="34dp"
+                        android:layout_height="34dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_round_8"
+                        android:backgroundTint="@color/avatar_green" />
+
+                    <View
+                        android:layout_width="34dp"
+                        android:layout_height="34dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_round_8"
+                        android:backgroundTint="@color/gold" />
+
+                    <View
+                        android:layout_width="34dp"
+                        android:layout_height="34dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_round_8"
+                        android:backgroundTint="@color/avatar_purple" />
+
+                    <View
+                        android:layout_width="34dp"
+                        android:layout_height="34dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_round_8"
+                        android:backgroundTint="@color/text_primary" />
+                </LinearLayout>
+
+                <!-- Pushes the options sheet to the bottom -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_weight="1" />
+
+                <!-- Options sheet -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_sheet_top"
+                    android:elevation="10dp"
+                    android:orientation="vertical"
+                    android:paddingBottom="12dp">
+
+                    <View
+                        android:layout_width="40dp"
+                        android:layout_height="4dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginBottom="6dp"
+                        android:background="@drawable/bg_pill"
+                        android:backgroundTint="@color/border" />
+
+                    <LinearLayout
+                        android:id="@+id/optionPhoto"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_gallery"
+                            app:tint="@color/avatar_green" />
+
+                        <TextView
+                            style="@style/Kin.Text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="Photo/video"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_tag"
+                            app:tint="@color/avatar_steel" />
+
+                        <TextView
+                            style="@style/Kin.Text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="Tag people"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_smile"
+                            app:tint="@color/gold" />
+
+                        <TextView
+                            style="@style/Kin.Text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="Feeling/activity"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_pin"
+                            app:tint="@color/rust" />
+
+                        <TextView
+                            style="@style/Kin.Text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="Check in"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_video_call"
+                            app:tint="@color/avatar_crimson" />
+
+                        <TextView
+                            style="@style/Kin.Text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="Live video"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/optionCamera"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_camera"
+                            app:tint="@color/teal" />
+
+                        <TextView
+                            style="@style/Kin.Text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="Camera"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_calendar"
+                            app:tint="@color/avatar_indigo" />
+
+                        <TextView
+                            style="@style/Kin.Text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="Create event"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
