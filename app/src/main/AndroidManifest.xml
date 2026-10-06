@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Needed by the story camera screen (asked at runtime) -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.SMDASS1">
+
+        <!-- 1. Splash: the launcher screen -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.SMDASS1.Teal">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- 2-3. Log in and sign up -->
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".SignUpActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- 4. Home and the posts opened from it -->
+        <activity
+            android:name=".HomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PostDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CommentsActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".CreatePostActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".PhotoPickerActivity"
+            android:exported="false" />
+
+        <!-- Stories (dark screens) -->
+        <activity
+            android:name=".StoryCameraActivity"
+            android:exported="false"
+            android:theme="@style/Theme.SMDASS1.Dark" />
+        <activity
+            android:name=".StoryEditorActivity"
+            android:exported="false"
+            android:theme="@style/Theme.SMDASS1.Dark" />
+        <activity
+            android:name=".StoryViewerActivity"
+            android:exported="false"
+            android:theme="@style/Theme.SMDASS1.Dark"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".MyStoryActivity"
+            android:exported="false"
+            android:theme="@style/Theme.SMDASS1.Dark" />
+
+        <!-- Search and the five tabs -->
+        <activity
+            android:name=".SearchActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".FriendsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MarketplaceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NotificationsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MenuActivity"
+            android:exported="false" />
+
+        <!-- Profiles -->
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditProfileActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".UserProfileActivity"
+            android:exported="false" />
+
+        <!-- Messaging -->
+        <activity
+            android:name=".ChatsActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ChatActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".VoiceCallActivity"
+            android:exported="false"
+            android:theme="@style/Theme.SMDASS1.Teal" />
+    </application>
+
+</manifest>
