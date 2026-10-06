@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Screen 22: voice call. The avatar sits inside two soft rings, controls along the bottom. -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/teal"
+    android:fitsSystemWindows="true">
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_max="@dimen/content_max_width_narrow">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingTop="40dp"
+            android:paddingBottom="48dp">
+
+            <!-- Encryption note -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:alpha="0.85"
+                    android:src="@drawable/ic_lock"
+                    app:tint="@color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:alpha="0.85"
+                    android:letterSpacing="0.05"
+                    android:text="End-to-end encrypted"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <!-- Avatar with two soft rings around it -->
+            <RelativeLayout
+                android:layout_width="200dp"
+                android:layout_height="200dp">
+
+                <View
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_centerInParent="true"
+                    android:alpha="0.08"
+                    android:background="@drawable/bg_round_24"
+                    android:backgroundTint="@color/white" />
+
+                <View
+                    android:layout_width="176dp"
+                    android:layout_height="176dp"
+                    android:layout_centerInParent="true"
+                    android:alpha="0.12"
+                    android:background="@drawable/bg_round_24"
+                    android:backgroundTint="@color/white" />
+
+                <TextView
+                    style="@style/Kin.Avatar"
+                    android:layout_width="156dp"
+                    android:layout_height="156dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/bg_round_24"
+                    android:backgroundTint="@color/avatar_purple"
+                    android:text="AM"
+                    android:textSize="68sp" />
+            </RelativeLayout>
+
+            <!-- Name and timer -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ammi"
+                    android:textColor="@color/white"
+                    android:textSize="32sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/bg_circle"
+                    android:backgroundTint="@color/love"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_heart_filled"
+                    app:tint="@color/white" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="03:12"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1.3" />
+
+            <!-- Controls: transcript, mute, hang up, speaker -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="38dp"
+                android:paddingEnd="38dp">
+
+                <ImageView
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/bg_circle"
+                    android:backgroundTint="@color/call_button"
+                    android:contentDescription="Transcript"
+                    android:padding="16dp"
+                    android:src="@drawable/ic_transcript"
+                    app:tint="@color/white" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/bg_circle"
+                    android:backgroundTint="@color/call_button"
+                    android:contentDescription="Mute"
+                    android:padding="16dp"
+                    android:src="@drawable/ic_mic"
+                    app:tint="@color/white" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/btnEndCall"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/bg_round_24"
+                    android:backgroundTint="@color/call_red"
+                    android:contentDescription="End call"
+                    android:padding="22dp"
+                    android:src="@drawable/ic_end_call" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/bg_circle"
+                    android:backgroundTint="@color/call_button"
+                    android:contentDescription="Speaker"
+                    android:padding="16dp"
+                    android:src="@drawable/ic_volume"
+                    app:tint="@color/white" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
