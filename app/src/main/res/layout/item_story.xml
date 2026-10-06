@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One story card in the Home stories row. HomeActivity fills in picture, initials, colour and name. -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="104dp"
+    android:layout_height="176dp"
+    android:background="@drawable/bg_round_16"
+    android:clipToOutline="true">
+
+    <ImageView
+        android:id="@+id/storyArt"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
+
+    <RelativeLayout
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_margin="6dp"
+        android:background="@drawable/bg_story_ring"
+        android:padding="3dp">
+
+        <TextView
+            android:id="@+id/tvInitials"
+            style="@style/Kin.Avatar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tvName"
+        style="@style/Kin.Text.Name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="12dp"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+</RelativeLayout>
