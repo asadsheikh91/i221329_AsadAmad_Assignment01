@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Screen 16: edit profile. Public details first, then private information. -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_max="@dimen/content_max_width">
+
+        <!-- Top bar: Cancel, title, Save -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
+
+            <TextView
+                android:id="@+id/btnCancel"
+                style="@style/Kin.Text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Cancel" />
+
+            <TextView
+                style="@style/Kin.Text.Heading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Edit profile" />
+
+            <TextView
+                android:id="@+id/btnSave"
+                style="@style/Kin.Text.Link"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:text="Save" />
+        </LinearLayout>
+
+        <View
+            style="@style/Kin.Divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="24dp">
+
+                <!-- Profile picture -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginEnd="16dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/Kin.Text.Heading"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Profile picture" />
+
+                    <TextView
+                        style="@style/Kin.Text.Link"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Edit" />
+                </LinearLayout>
+
+                <TextView
+                    style="@style/Kin.Avatar"
+                    android:layout_width="112dp"
+                    android:layout_height="112dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="12dp"
+                    android:backgroundTint="@color/teal"
+                    android:text="JW"
+                    android:textSize="44sp" />
+
+                <!-- Cover photo: Edit and the camera button open the gallery -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="22dp"
+                    android:layout_marginEnd="16dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/Kin.Text.Heading"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Cover photo" />
+
+                    <TextView
+                        android:id="@+id/btnEditCover"
+                        style="@style/Kin.Text.Link"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Edit" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/bg_round_16"
+                    android:clipToOutline="true">
+
+                    <ImageView
+                        android:id="@+id/coverPreview"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/art_teal" />
+
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_margin="12dp"
+                        android:background="@drawable/bg_circle"
+                        android:contentDescription="Change cover photo"
+                        android:padding="9dp"
+                        android:src="@drawable/ic_camera"
+                        app:tint="@color/text_primary" />
+                </RelativeLayout>
+
+                <View
+                    style="@style/Kin.Divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginEnd="16dp" />
+
+                <!-- Public details -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:orientation="horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
+
+                    <TextView
+                        style="@style/Kin.Text"
+                        android:layout_width="104dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="Name" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <EditText
+                            android:id="@+id/etName"
+                            style="@style/Kin.Input"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:autofillHints="name"
+                            android:inputType="textPersonName"
+                            android:text="Jacob West"
+                            android:textSize="17sp" />
+
+                        <View
+                            style="@style/Kin.Divider"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:orientation="horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
+
+                    <TextView
+                        style="@style/Kin.Text"
+                        android:layout_width="104dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="Username" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <EditText
+                            style="@style/Kin.Input"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:autofillHints="username"
+                            android:inputType="text"
+                            android:text="jacob.west"
+                            android:textSize="17sp" />
+
+                        <View
+                            style="@style/Kin.Divider"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:orientation="horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
+
+                    <TextView
+                        style="@style/Kin.Text"
+                        android:layout_width="104dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="Website" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <EditText
+                            style="@style/Kin.Input"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:hint="Website"
+                            android:importantForAutofill="no"
+                            android:inputType="textUri"
+                            android:textSize="17sp" />
+
+                        <View
+                            style="@style/Kin.Divider"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:orientation="horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
+
+                    <TextView
+                        style="@style/Kin.Text"
+                        android:layout_width="104dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="Bio" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <EditText
+                            android:id="@+id/etBio"
+                            style="@style/Kin.Input"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:importantForAutofill="no"
+                            android:inputType="text"
+                            android:text="Digital goodies designer."
+                            android:textSize="17sp" />
+
+                        <View
+                            style="@style/Kin.Divider"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    style="@style/Kin.Text.Link"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="14dp"
+                    android:text="Switch to professional mode" />
+
+                <!-- Private information -->
+                <TextView
+                    style="@style/Kin.Text.Heading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="22dp"
+                    android:text="Private information" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:orientation="horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
+
+                    <TextView
+                        style="@style/Kin.Text"
+                        android:layout_width="104dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="Email" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <EditText
+                            style="@style/Kin.Input"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:autofillHints="emailAddress"
+                            android:inputType="textEmailAddress"
+                            android:text="jacob.west@mail.com"
+                            android:textSize="17sp" />
+
+                        <View
+                            style="@style/Kin.Divider"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:orientation="horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
+
+                    <TextView
+                        style="@style/Kin.Text"
+                        android:layout_width="104dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="Phone" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <EditText
+                            style="@style/Kin.Input"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:autofillHints="phone"
+                            android:inputType="phone"
+                            android:text="+92 300 1234567"
+                            android:textSize="17sp" />
+
+                        <View
+                            style="@style/Kin.Divider"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:orientation="horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
+
+                    <TextView
+                        style="@style/Kin.Text"
+                        android:layout_width="104dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="Gender" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <EditText
+                            style="@style/Kin.Input"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:importantForAutofill="no"
+                            android:inputType="text"
+                            android:text="Male"
+                            android:textSize="17sp" />
+
+                        <View
+                            style="@style/Kin.Divider"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
