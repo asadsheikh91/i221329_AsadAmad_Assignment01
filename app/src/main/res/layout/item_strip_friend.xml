@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One friend in the strip at the top of the chat list: tap to open the conversation. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="74dp"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvInitials"
+        style="@style/Kin.Avatar"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:textSize="22sp" />
+
+    <TextView
+        android:id="@+id/tvName"
+        style="@style/Kin.Text.Secondary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textSize="15sp" />
+</LinearLayout>

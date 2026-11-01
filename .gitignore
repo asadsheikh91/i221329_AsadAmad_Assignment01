@@ -13,3 +13,6 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Your Firebase project keys: add your own file here (see FIREBASE_CHECKLIST.md), never commit it
+/app/google-services.json

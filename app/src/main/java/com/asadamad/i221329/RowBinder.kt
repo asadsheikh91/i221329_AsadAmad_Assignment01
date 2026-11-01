@@ -27,6 +27,13 @@ fun bindStory(row: View, art: Int, initials: String, color: Int, name: String) {
     setText(row, R.id.tvName, name)
 }
 
+/** A story card whose picture is filled in separately (the Home row shows the story's own photo). */
+fun bindStoryCard(row: View, initials: String, color: Int, name: String) {
+    setText(row, R.id.tvInitials, initials)
+    tint(row.findViewById(R.id.tvInitials), color)
+    setText(row, R.id.tvName, name)
+}
+
 /** A top-level comment bubble (item_comment). */
 fun bindComment(row: View, initials: String, color: Int, name: String, message: String) {
     setText(row, R.id.tvInitials, initials)

@@ -1,15 +1,20 @@
 package com.asadamad.i221329
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.ImageView
 
-// Screen 22: voice call. The red button hangs up and returns to the chat.
-class VoiceCallActivity : AppCompatActivity() {
+// Screen 22: voice call. Green button answers, red button hangs up, mute and speaker work during the call.
+class VoiceCallActivity : BaseCallActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.fragment_call)
+    override val isVideo = false
+    override val layoutRes = R.layout.fragment_call
 
-        linkBack(this, R.id.btnEndCall)
+    private var speakerOn = false
+
+    override fun onViewsReady() {
+        findViewById<ImageView>(R.id.btnSpeaker).setOnClickListener { view ->
+            speakerOn = !speakerOn
+            call.setSpeaker(speakerOn)
+            view.alpha = if (speakerOn) 0.5f else 1f
+        }
     }
 }

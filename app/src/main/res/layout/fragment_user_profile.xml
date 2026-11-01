@@ -41,6 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="14dp"
                 android:layout_weight="1"
+                android:id="@+id/tvTitle"
                 android:text="Omar Farooq" />
 
             <ImageView
@@ -96,6 +97,7 @@
                             android:padding="3dp">
 
                             <TextView
+                                android:id="@+id/tvInitials"
                                 style="@style/Kin.Avatar"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -107,6 +109,7 @@
                 </RelativeLayout>
 
                 <TextView
+                    android:id="@+id/tvName"
                     style="@style/Kin.Text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -126,12 +129,13 @@
                     android:textSize="16sp" />
 
                 <TextView
+                    android:id="@+id/tvBio"
                     style="@style/Kin.Text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:gravity="center"
-                    android:text="Night photographer. Karachi after dark." />
+                    android:text="" />
 
                 <!-- Actions -->
                 <LinearLayout
@@ -143,6 +147,7 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
+                        android:id="@+id/btnAddFriend"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -164,6 +169,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
+                            android:id="@+id/tvAddFriend"
                             android:text="Add friend"
                             android:textColor="@color/white"
                             android:textSize="17sp" />

@@ -17,6 +17,7 @@
         android:paddingEnd="16dp">
 
         <TextView
+            android:id="@+id/tvInitials"
             style="@style/Kin.Avatar"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -32,10 +33,11 @@
             android:orientation="vertical">
 
             <TextView
-                style="@style/Kin.Text"
+                android:id="@+id/tvAuthor"
+                style="@style/Kin.Text.Name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/home_post_header" />
+                android:text="Kinnect user" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -45,10 +47,11 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/tvTime"
                     style="@style/Kin.Text.Secondary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2h ·" />
+                    android:text="now ·" />
 
                 <ImageView
                     android:layout_width="14dp"
@@ -66,78 +69,34 @@
             app:tint="@color/text_secondary" />
 
         <ImageView
+            android:id="@+id/btnDelete"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginStart="18dp"
+            android:contentDescription="Delete post"
             android:src="@drawable/ic_close"
+            android:visibility="gone"
             app:tint="@color/text_secondary" />
     </LinearLayout>
 
     <TextView
+        android:id="@+id/tvPostText"
         style="@style/Kin.Text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:text="Sunset walk with the crew. Worth every grain of sand in my shoes." />
+        android:paddingEnd="16dp" />
 
-    <!-- Photo collage: one tall photo on the left, two on the right (+4 more) -->
-    <LinearLayout
-        android:id="@+id/photoCollage"
+    <!-- The post's photo (hidden for text-only posts) -->
+    <ImageView
+        android:id="@+id/postImage"
         android:layout_width="match_parent"
-        android:layout_height="260dp"
+        android:layout_height="280dp"
         android:layout_marginTop="12dp"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="1dp"
-            android:layout_weight="1"
-            android:scaleType="centerCrop"
-            android:src="@drawable/art_sand" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="1dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginBottom="1.5dp"
-                android:layout_weight="1"
-                android:scaleType="centerCrop"
-                android:src="@drawable/art_teal" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="1.5dp"
-                android:layout_weight="1">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/art_lilac" />
-
-                <!-- Darkens the last photo and shows how many more there are -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/bg_overlay"
-                    android:gravity="center"
-                    android:text="+4"
-                    android:textColor="@color/white"
-                    android:textSize="28sp"
-                    android:textStyle="bold" />
-            </RelativeLayout>
-        </LinearLayout>
-    </LinearLayout>
+        android:contentDescription="Post photo"
+        android:scaleType="centerCrop"
+        android:visibility="gone" />
 
     <!-- Reaction and comment counts -->
     <LinearLayout
@@ -152,6 +111,7 @@
 
         <!-- Overlapping like / love / haha circles -->
         <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/likeCircles"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -183,19 +143,21 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/tvLikes"
             style="@style/Kin.Text.Secondary"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
             android:layout_weight="1"
-            android:text="Aisha and 1.2K others"
+            android:text=""
             android:textSize="15sp" />
 
         <TextView
+            android:id="@+id/tvComments"
             style="@style/Kin.Text.Secondary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="86 comments · 12 shares"
+            android:text=""
             android:textSize="15sp" />
     </LinearLayout>
 
@@ -223,12 +185,14 @@
             android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/ivLike"
                 android:layout_width="22dp"
                 android:layout_height="22dp"
                 android:src="@drawable/ic_like"
                 app:tint="@color/text_secondary" />
 
             <TextView
+                android:id="@+id/tvLike"
                 style="@style/Kin.Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

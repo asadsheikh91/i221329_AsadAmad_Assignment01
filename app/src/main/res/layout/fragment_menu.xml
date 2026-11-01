@@ -232,6 +232,7 @@
                             style="@style/Kin.Text.Name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:id="@+id/tvMenuName"
                             android:text="Jacob West"
                             android:textSize="18sp" />
 

@@ -41,6 +41,7 @@
                 android:layout_marginStart="12dp">
 
                 <TextView
+                    android:id="@+id/tvInitials"
                     style="@style/Kin.Avatar"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
@@ -65,6 +66,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tvName"
                     style="@style/Kin.Text.Name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -72,10 +74,11 @@
                     android:textSize="18sp" />
 
                 <TextView
+                    android:id="@+id/tvStatus"
                     style="@style/Kin.Text.Secondary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Active now"
+                    android:text="Kinnect friend"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -88,6 +91,7 @@
                 app:tint="@color/teal" />
 
             <ImageView
+                android:id="@+id/btnVideoCall"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
                 android:layout_marginStart="18dp"
@@ -110,6 +114,7 @@
             android:layout_height="1dp" />
 
         <ScrollView
+            android:id="@+id/messagesScroll"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
@@ -122,6 +127,7 @@
 
                 <!-- Contact intro -->
                 <TextView
+                    android:id="@+id/tvIntroInitials"
                     style="@style/Kin.Avatar"
                     android:layout_width="72dp"
                     android:layout_height="72dp"
@@ -132,6 +138,7 @@
                     android:textSize="28sp" />
 
                 <TextView
+                    android:id="@+id/tvIntroName"
                     style="@style/Kin.Text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -147,201 +154,15 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="6dp"
-                    android:text="You're friends on Kinnect · Lives in Karachi"
+                    android:text="Say hi on Kinnect"
                     android:textSize="15sp" />
 
-                <TextView
-                    style="@style/Kin.Text.Secondary"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="22dp"
-                    android:letterSpacing="0.04"
-                    android:text="TODAY 4:49 PM"
-                    android:textStyle="bold" />
-
-                <!-- Incoming messages (Aisha) -->
-                <include
-                    android:id="@+id/msgHey"
-                    layout="@layout/item_message_received"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="48dp"
-                    android:layout_marginTop="10dp" />
-
-                <include
-                    android:id="@+id/msgTable"
-                    layout="@layout/item_message_received"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="48dp"
-                    android:layout_marginTop="2dp" />
-
+                <!-- Bubbles are added here by ChatActivity -->
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:id="@+id/messagesContainer"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="2dp"
-                    android:gravity="bottom"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        style="@style/Kin.Avatar"
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:backgroundTint="@color/avatar_crimson"
-                        android:text="AK"
-                        android:textSize="10sp" />
-
-                    <include
-                        android:id="@+id/msgBring"
-                        layout="@layout/item_message_received"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp" />
-                </LinearLayout>
-
-                <!-- Our messages -->
-                <include
-                    android:id="@+id/msgYes"
-                    layout="@layout/item_message_sent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginEnd="12dp" />
-
-                <!-- A reaction hangs off the corner of this bubble -->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginEnd="12dp"
-                    android:orientation="vertical">
-
-                    <include
-                        android:id="@+id/msgBatteries"
-                        layout="@layout/item_message_sent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginTop="-11dp"
-                        android:background="@drawable/bg_react_love"
-                        android:elevation="2dp"
-                        android:padding="5dp"
-                        android:src="@drawable/ic_heart_filled"
-                        app:tint="@color/white" />
-                </LinearLayout>
-
-                <TextView
-                    style="@style/Kin.Text.Secondary"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="14dp"
-                    android:layout_marginEnd="12dp"
-                    android:text="You replied to Aisha"
-                    android:textSize="13sp" />
-
-                <TextView
-                    style="@style/Kin.Text.Secondary"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginEnd="12dp"
-                    android:background="@drawable/bg_round_18"
-                    android:backgroundTint="@color/chip"
-                    android:paddingStart="14dp"
-                    android:paddingTop="8dp"
-                    android:paddingEnd="14dp"
-                    android:paddingBottom="8dp"
-                    android:text="Lina booked the table for 8"
-                    android:textSize="16sp" />
-
-                <include
-                    android:id="@+id/msgPerfect"
-                    layout="@layout/item_message_sent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginEnd="12dp" />
-
-                <ImageView
-                    android:layout_width="200dp"
-                    android:layout_height="140dp"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginEnd="12dp"
-                    android:background="@drawable/bg_round_18"
-                    android:clipToOutline="true"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/art_lilac" />
-
-                <!-- Seen marker -->
-                <View
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="6dp"
-                    android:layout_marginEnd="12dp"
-                    android:background="@drawable/bg_circle"
-                    android:backgroundTint="@color/avatar_crimson" />
-
-                <!-- Typing indicator -->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:gravity="bottom"
-                    android:orientation="horizontal"
-                    android:paddingStart="12dp">
-
-                    <TextView
-                        style="@style/Kin.Avatar"
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:backgroundTint="@color/avatar_crimson"
-                        android:text="AK"
-                        android:textSize="10sp" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:layout_marginStart="8dp"
-                        android:background="@drawable/bg_chip"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingStart="14dp"
-                        android:paddingEnd="14dp">
-
-                        <View
-                            android:layout_width="8dp"
-                            android:layout_height="8dp"
-                            android:background="@drawable/bg_circle"
-                            android:backgroundTint="#7A7570" />
-
-                        <View
-                            android:layout_width="8dp"
-                            android:layout_height="8dp"
-                            android:layout_marginStart="5dp"
-                            android:background="@drawable/bg_circle"
-                            android:backgroundTint="#9C968F" />
-
-                        <View
-                            android:layout_width="8dp"
-                            android:layout_height="8dp"
-                            android:layout_marginStart="5dp"
-                            android:background="@drawable/bg_circle"
-                            android:backgroundTint="#C8C3BC" />
-                    </LinearLayout>
-                </LinearLayout>
+                    android:orientation="vertical" />
             </LinearLayout>
         </ScrollView>
 
@@ -399,6 +220,7 @@
                 android:paddingEnd="10dp">
 
                 <EditText
+                    android:id="@+id/etMessage"
                     style="@style/Kin.Input"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -416,11 +238,12 @@
             </LinearLayout>
 
             <ImageView
+                android:id="@+id/btnSend"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginStart="12dp"
-                android:contentDescription="Send a like"
-                android:src="@drawable/ic_like"
+                android:contentDescription="Send"
+                android:src="@drawable/ic_send"
                 app:tint="@color/teal" />
         </LinearLayout>
     </LinearLayout>

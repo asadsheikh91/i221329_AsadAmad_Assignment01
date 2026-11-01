@@ -358,7 +358,9 @@
                             android:layout_weight="1"
                             android:autofillHints="emailAddress"
                             android:inputType="textEmailAddress"
-                            android:text="jacob.west@mail.com"
+                            android:id="@+id/etEmail"
+                            android:enabled="false"
+                            android:text=""
                             android:textSize="17sp" />
 
                         <View

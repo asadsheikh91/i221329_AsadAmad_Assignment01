@@ -244,7 +244,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
                         android:layout_weight="1"
-                        android:text="12"
+                        android:id="@+id/tvRequestCount"
+                        android:text="0"
                         android:textColor="@color/rust"
                         android:textSize="22sp" />
 
@@ -255,29 +256,22 @@
                         android:text="See all" />
                 </LinearLayout>
 
-                <include
-                    android:id="@+id/requestSara"
-                    layout="@layout/item_friend"
+                <LinearLayout
+                    android:id="@+id/requestsContainer"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
 
-                <include
-                    android:id="@+id/requestBilal"
-                    layout="@layout/item_friend"
+                <TextView
+                    android:id="@+id/tvNoRequests"
+                    style="@style/Kin.Text.Secondary"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <include
-                    android:id="@+id/requestNoor"
-                    layout="@layout/item_friend"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <include
-                    android:id="@+id/requestDaniyal"
-                    layout="@layout/item_friend"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:paddingStart="16dp"
+                    android:paddingTop="6dp"
+                    android:paddingEnd="16dp"
+                    android:text="No pending requests."
+                    android:visibility="gone" />
 
                 <View
                     style="@style/Kin.Divider"
@@ -297,17 +291,47 @@
                     android:text="People you may know"
                     android:textSize="22sp" />
 
-                <include
-                    android:id="@+id/suggestOmarS"
-                    layout="@layout/item_friend"
+                <LinearLayout
+                    android:id="@+id/suggestionsContainer"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
 
-                <include
-                    android:id="@+id/suggestOmarT"
-                    layout="@layout/item_friend"
+                <View
+                    style="@style/Kin.Divider"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="1dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginEnd="16dp" />
+
+                <TextView
+                    style="@style/Kin.Text.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginBottom="4dp"
+                    android:text="Your friends"
+                    android:textSize="22sp" />
+
+                <LinearLayout
+                    android:id="@+id/friendsContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+
+                <TextView
+                    android:id="@+id/tvNoFriends"
+                    style="@style/Kin.Text.Secondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="16dp"
+                    android:paddingTop="6dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="24dp"
+                    android:text="No friends yet. Send a request from People you may know."
+                    android:visibility="gone" />
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

@@ -63,6 +63,7 @@
                 android:src="@drawable/ic_logo" />
 
             <TextView
+                android:id="@+id/tvRecentLabel"
                 style="@style/Kin.Text.Secondary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -88,12 +89,13 @@
                     android:layout_height="62dp">
 
                     <TextView
+                        android:id="@+id/tvRecentInitials"
                         style="@style/Kin.Avatar"
                         android:layout_width="56dp"
                         android:layout_height="56dp"
                         android:layout_alignParentBottom="true"
                         android:backgroundTint="@color/teal"
-                        android:text="JW"
+                        android:text="K"
                         android:textSize="20sp" />
 
                     <TextView
@@ -118,10 +120,11 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tvRecentName"
                         style="@style/Kin.Text.Name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Jacob West"
+                        android:text="Kinnect user"
                         android:textSize="18sp" />
 
                     <TextView
@@ -164,8 +167,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:autofillHints="emailAddress"
-                    android:inputType="textEmailAddress"
-                    android:text="jacob.west@mail.com" />
+                    android:inputType="textEmailAddress" />
             </LinearLayout>
 
             <!-- Password field -->
@@ -198,8 +200,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:autofillHints="password"
-                        android:inputType="textPassword"
-                        android:text="kinnect2026" />
+                        android:inputType="textPassword" />
                 </LinearLayout>
 
                 <ImageView
@@ -220,6 +221,7 @@
                 android:textSize="18sp" />
 
             <TextView
+                android:id="@+id/tvForgot"
                 style="@style/Kin.Text.Link"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -160,13 +160,13 @@
                         android:text="First name" />
 
                     <EditText
+                        android:id="@+id/etFirstName"
                         style="@style/Kin.Input"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:autofillHints="givenName"
-                        android:inputType="textPersonName"
-                        android:text="Jacob" />
+                        android:inputType="textPersonName" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -187,13 +187,13 @@
                         android:text="Last name" />
 
                     <EditText
+                        android:id="@+id/etLastName"
                         style="@style/Kin.Input"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:autofillHints="familyName"
-                        android:inputType="textPersonName"
-                        android:text="West" />
+                        android:inputType="textPersonName" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -449,13 +449,13 @@
                     android:text="Email" />
 
                 <EditText
+                    android:id="@+id/etEmail"
                     style="@style/Kin.Input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:autofillHints="emailAddress"
-                    android:inputType="textEmailAddress"
-                    android:text="jacob.west@mail.com" />
+                    android:inputType="textEmailAddress" />
             </LinearLayout>
 
             <!-- New password -->
@@ -482,13 +482,13 @@
                         android:text="New password" />
 
                     <EditText
+                        android:id="@+id/etPassword"
                         style="@style/Kin.Input"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:autofillHints="newPassword"
-                        android:inputType="textPassword"
-                        android:text="kinnect123" />
+                        android:inputType="textPassword" />
                 </LinearLayout>
 
                 <ImageView

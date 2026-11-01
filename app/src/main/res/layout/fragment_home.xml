@@ -358,7 +358,23 @@
                     android:layout_height="8dp"
                     android:background="@color/band" />
 
-                <include layout="@layout/item_post" />
+                <!-- Posts, newest first (filled in by HomeActivity) -->
+                <LinearLayout
+                    android:id="@+id/postsContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+
+                <TextView
+                    android:id="@+id/tvNoPosts"
+                    style="@style/Kin.Text.Secondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="32dp"
+                    android:text="No posts yet. Share the first one!"
+                    android:textSize="16sp"
+                    android:visibility="gone" />
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

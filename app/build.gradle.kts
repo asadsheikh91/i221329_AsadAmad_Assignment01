@@ -1,5 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
+    // Reads app/google-services.json (download it from your Firebase project)
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -37,6 +39,15 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.core.ktx)
     implementation(libs.material)
+
+    // Backend: Firebase Authentication + Cloud Firestore
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
+
+    // Voice and video calls
+    implementation(libs.stream.webrtc)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)

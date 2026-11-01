@@ -3,6 +3,9 @@ package com.asadamad.i221329
 import android.app.Activity
 import android.content.Intent
 import android.view.View
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import com.google.firebase.firestore.ListenerRegistration
 
 // Small helpers shared by every screen so each Activity stays short.
 
@@ -16,6 +19,14 @@ const val KEY_BIO = "profile_bio"
 const val EXTRA_FIRST_NAME = "first_name"
 const val EXTRA_NAME = "name"
 const val EXTRA_BIO = "bio"
+const val EXTRA_UID = "uid"
+const val EXTRA_POST_ID = "post_id"
+const val EXTRA_LIKE_COUNT = "like_count"
+const val EXTRA_PEER_UID = "peer_uid"
+const val EXTRA_PEER_NAME = "peer_name"
+const val EXTRA_CALL_ID = "call_id"
+const val EXTRA_INCOMING = "incoming"
+const val EXTRA_PHOTO_URI = "photo_uri"
 
 // Positions of the five main tabs (Home, Friends, Marketplace, Notifications, Menu)
 const val TAB_HOME = 0
@@ -57,6 +68,34 @@ fun setupTabs(activity: Activity, current: Int) {
     bindTab(activity, R.id.tabMarketplace, current, TAB_MARKETPLACE, MarketplaceActivity::class.java)
     bindTab(activity, R.id.tabNotifications, current, TAB_NOTIFICATIONS, NotificationsActivity::class.java)
     bindTab(activity, R.id.tabMenu, current, TAB_MENU, MenuActivity::class.java)
+    watchBell(activity)
+}
+
+/** Keeps the red number on the bell in the tab bar equal to the number of unread notifications. */
+private fun watchBell(activity: Activity) {
+    val owner = activity as? LifecycleOwner ?: return
+    val tab = activity.findViewById<View>(R.id.tabNotifications) ?: return
+    val badge = firstTextView(tab) ?: return
+    setVisible(badge, false)
+    owner.lifecycle.addObserver(object : DefaultLifecycleObserver {
+        private var listener: ListenerRegistration? = null
+
+        override fun onStart(owner: LifecycleOwner) {
+            if (Backend.myUid == null) {
+                return
+            }
+            listener = Backend.listenNotices { notices ->
+                val unread = notices.count { !it.read }
+                badge.text = if (unread > 99) "99+" else unread.toString()
+                setVisible(badge, unread > 0)
+            }
+        }
+
+        override fun onStop(owner: LifecycleOwner) {
+            listener?.remove()
+            listener = null
+        }
+    })
 }
 
 private fun bindTab(activity: Activity, viewId: Int, current: Int, tab: Int, target: Class<*>) {
@@ -75,8 +114,28 @@ private fun bindTab(activity: Activity, viewId: Int, current: Int, tab: Int, tar
     }
 }
 
-/** Goes back to Log in and throws away every screen that was open before. */
+/** Opens the profile of another Kinnect user. */
+fun openUserProfile(from: Activity, uid: String) {
+    from.startActivity(Intent(from, UserProfileActivity::class.java).putExtra(EXTRA_UID, uid))
+}
+
+/** Opens the conversation with another Kinnect user. */
+fun openChat(from: Activity, uid: String) {
+    from.startActivity(Intent(from, ChatActivity::class.java).putExtra(EXTRA_UID, uid))
+}
+
+/** Starts a voice or video call to [peer]; the other phone rings as soon as the call is set up. */
+fun placeCall(from: Activity, peer: UserInfo, video: Boolean) {
+    val screen = if (video) VideoCallActivity::class.java else VoiceCallActivity::class.java
+    val intent = Intent(from, screen)
+    intent.putExtra(EXTRA_PEER_UID, peer.uid)
+    intent.putExtra(EXTRA_PEER_NAME, peer.name)
+    from.startActivity(intent)
+}
+
+/** Signs out, goes back to Log in and throws away every screen that was open before. */
 fun logOut(activity: Activity) {
+    Backend.logOut()
     val intent = Intent(activity, LoginActivity::class.java)
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
     activity.startActivity(intent)

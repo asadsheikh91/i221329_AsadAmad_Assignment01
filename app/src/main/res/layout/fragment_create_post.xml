@@ -77,6 +77,7 @@
                     android:paddingEnd="16dp">
 
                     <TextView
+                        android:id="@+id/tvPostInitials"
                         style="@style/Kin.Avatar"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
@@ -94,6 +95,7 @@
                             style="@style/Kin.Text.Name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:id="@+id/tvPostAuthor"
                             android:text="Jacob West"
                             android:textSize="17sp" />
 
@@ -183,8 +185,21 @@
                     android:importantForAutofill="no"
                     android:inputType="textMultiLine"
                     android:lineSpacingMultiplier="1.05"
-                    android:text="Weekend plan: coffee, sketching, and absolutely no email."
                     android:textSize="24sp" />
+
+                <!-- The chosen photo -->
+                <ImageView
+                    android:id="@+id/ivPostPreview"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/bg_round_12"
+                    android:clipToOutline="true"
+                    android:contentDescription="Chosen photo"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone" />
 
                 <!-- Background colour swatches -->
                 <LinearLayout
