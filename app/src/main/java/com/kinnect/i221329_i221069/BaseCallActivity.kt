@@ -13,12 +13,12 @@ import androidx.appcompat.app.AppCompatActivity
 
 // Everything the voice and the video call screens have in common: ringing, accepting,
 // the timer, mute and hang up. The two subclasses only add what is special about their layout.
-abstract class BaseCallActivity : AppCompatActivity(), WebRtcCall.Listener {
+abstract class BaseCallActivity : AppCompatActivity(), AgoraCall.Listener {
 
     protected abstract val isVideo: Boolean
     protected abstract val layoutRes: Int
 
-    protected lateinit var call: WebRtcCall
+    protected lateinit var call: AgoraCall
     protected lateinit var peerUid: String
     protected lateinit var peerName: String
     protected lateinit var statusView: TextView
@@ -72,7 +72,8 @@ abstract class BaseCallActivity : AppCompatActivity(), WebRtcCall.Listener {
         val callId = intent.getStringExtra(EXTRA_CALL_ID) ?: Backend.newCallId()
 
         Backend.activeCallId = callId
-        call = WebRtcCall(this, callId, isVideo, !incoming, this)
+        call = AgoraCall(this, callId, isVideo, !incoming, this)
+        call.setPeer(peerUid, peerName)
 
         findViewById<TextView>(R.id.tvCallName).text = peerName
         findViewById<TextView>(R.id.tvCallInitials).apply {
@@ -141,7 +142,7 @@ abstract class BaseCallActivity : AppCompatActivity(), WebRtcCall.Listener {
         }
     }
 
-    // ------------------------------------------------------------------ WebRtcCall.Listener
+    // ------------------------------------------------------------------ AgoraCall.Listener
 
     override fun onConnected() {
         if (connected) {
