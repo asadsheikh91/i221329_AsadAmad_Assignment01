@@ -7,7 +7,6 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.firestore.ListenerRegistration
 
 // Screen 14: friends tab. Friend requests, people you may know and your friends, all live from Firestore.
 // Tapping a person opens their profile.
@@ -102,6 +101,7 @@ class FriendsActivity : AppCompatActivity() {
     ) {
         val row = LayoutInflater.from(this).inflate(R.layout.item_friend, into, false)
         bindFriend(row, user.initials, user.color, user.name, "", detail, primary, secondary)
+        bindAvatar(row.findViewById(R.id.tvInitials), user.uid, user.name)
         row.findViewById<Button>(R.id.btnPrimary).setOnClickListener { onPrimary() }
         row.findViewById<Button>(R.id.btnSecondary).setOnClickListener { onSecondary() }
         row.setOnClickListener { openUserProfile(this, user.uid) }

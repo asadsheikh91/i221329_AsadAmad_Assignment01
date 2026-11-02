@@ -1,6 +1,8 @@
 package com.kinnect.i221329_i221069
 
 import android.content.Intent
+import android.net.Uri
+import android.widget.Toast
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -8,7 +10,6 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.firestore.ListenerRegistration
 
 // Screen 15: your own profile. Name, bio, cover photo, join date and friends all come from Firestore.
 class ProfileActivity : AppCompatActivity() {
@@ -21,6 +22,38 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var friendCountViews: List<TextView>
     private lateinit var friendAvatars: List<TextView>
     private var joinedView: TextView? = null
+
+    // The camera buttons of the design: a new profile picture or a new cover photo, saved at once
+    private val pickAvatar = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        if (uri != null) {
+            ImageTools.encode(this, uri, 256, 30_000, ImageTools.FILTER_NONE) { encoded ->
+                val uid = Backend.myUid
+                if (encoded == null || uid == null) {
+                    Toast.makeText(this, "Could not read that photo", Toast.LENGTH_SHORT).show()
+                } else {
+                    rememberAvatar(uid, encoded)
+                    bindAvatar(findViewById(R.id.tvInitials), uid, Backend.me?.name ?: "")
+                    Backend.saveAvatar(encoded) { saved ->
+                        if (!saved) Toast.makeText(this, "Could not save the picture", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+    }
+
+    private val pickCover = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        if (uri != null) {
+            ImageTools.encode(this, uri, 1000, 250_000, ImageTools.FILTER_NONE) { encoded ->
+                if (encoded == null) {
+                    Toast.makeText(this, "Could not read that photo", Toast.LENGTH_SHORT).show()
+                } else {
+                    Backend.saveCover(encoded) { saved ->
+                        if (saved) showCover() else Toast.makeText(this, "Could not save the cover photo", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+    }
 
     // Edit profile sends the new name and bio back through this launcher
     private val editLauncher = registerForActivityResult(
@@ -75,6 +108,10 @@ class ProfileActivity : AppCompatActivity() {
             editLauncher.launch(Intent(this, EditProfileActivity::class.java))
         }
 
+        // The little camera buttons on the cover and on the avatar
+        allViews(root).firstOrNull { it.contentDescription == "Change profile photo" }?.setOnClickListener { pickAvatar.launch("image/*") }
+        allViews(root).firstOrNull { it.contentDescription == "Change cover photo" }?.setOnClickListener { pickCover.launch("image/*") }
+
         // The round "more" button next to Edit profile
         allViews(root).firstOrNull { it.contentDescription == "More" }?.setOnClickListener {
             AlertDialog.Builder(this)
@@ -106,7 +143,7 @@ class ProfileActivity : AppCompatActivity() {
         if (name != null) {
             findViewById<TextView>(R.id.tvName).text = name
             findViewById<TextView>(R.id.tvTitle).text = name
-            findViewById<TextView>(R.id.tvInitials).text = initialsOf(name)
+            Backend.myUid?.let { bindAvatar(findViewById(R.id.tvInitials), it, name) }
         }
         if (bio != null) {
             findViewById<TextView>(R.id.tvBio).text = bio
@@ -144,8 +181,7 @@ class ProfileActivity : AppCompatActivity() {
                 circle.visibility = View.INVISIBLE
             } else {
                 setVisible(circle, true)
-                circle.text = friend.initials
-                circle.backgroundTintList = android.content.res.ColorStateList.valueOf(getColor(friend.color))
+                bindAvatar(circle, friend.uid, friend.name)
             }
         }
     }

@@ -20,7 +20,7 @@ class MenuActivity : AppCompatActivity() {
         val root = findViewById<View>(R.id.root)
         Backend.me?.let {
             findViewById<TextView>(R.id.tvMenuName).text = it.name
-            findTextExact(root, "JW")?.text = it.initials
+            findTextExact(root, "JW")?.let { avatar -> bindAvatar(avatar, it.uid, it.name) }
         }
 
         linkTo(this, R.id.menuProfile, ProfileActivity::class.java)

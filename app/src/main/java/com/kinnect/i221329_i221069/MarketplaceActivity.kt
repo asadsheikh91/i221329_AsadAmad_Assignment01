@@ -21,7 +21,6 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.firestore.ListenerRegistration
 
 // Screen 23: marketplace tab. Listings are live from Firestore (see Marketplace.kt) in the design's two-column grid.
 //  - Sell opens a form to list something        - Categories filters the grid by category

@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.firestore.ListenerRegistration
 
 // Screen 17: another person's profile, reached from search, friend requests, notifications and the friends list.
 // The first button follows the friendship: Add friend -> Requested -> Friends (or Accept request).
@@ -22,6 +21,7 @@ class UserProfileActivity : AppCompatActivity() {
     private var user: UserInfo? = null
     private var people: Map<String, UserInfo> = emptyMap()
     private var myFriendUids: Set<String> = emptySet()
+    private var theirFriends: List<String> = emptyList()
 
     // Views of the design that have no id: found once, before any text on the screen changes
     private lateinit var countLine: TextView
@@ -69,10 +69,7 @@ class UserProfileActivity : AppCompatActivity() {
                 findViewById<TextView>(R.id.tvTitle).text = loaded.name
                 findViewById<TextView>(R.id.tvName).text = loaded.name
                 findViewById<TextView>(R.id.tvBio).text = loaded.bio
-                findViewById<TextView>(R.id.tvInitials).apply {
-                    text = loaded.initials
-                    backgroundTintList = ColorStateList.valueOf(getColor(loaded.color))
-                }
+                bindAvatar(findViewById(R.id.tvInitials), loaded.uid, loaded.name)
                 showJoined(loaded.joined)
                 showFriendInfo()
             }
@@ -82,7 +79,11 @@ class UserProfileActivity : AppCompatActivity() {
                 PostImages.show(cover, "cover_${other}_${image.hashCode()}", image)
             }
         }
-        Backend.loadPostsOf(other) { posts -> showPhotos(posts.filter { it.imageBase64 != null }.take(3)) }
+        Backend.loadFriendUids(other) {
+            theirFriends = it
+            showFriendInfo()
+        }
+        Backend.loadPostsOf(other) { posts -> showPhotos(posts.filter { it.imageCount > 0 }.take(3)) }
     }
 
     override fun onStart() {
@@ -137,9 +138,9 @@ class UserProfileActivity : AppCompatActivity() {
     /** "112 friends · 4 mutual" and "Friends with Aisha Khan and 3 others". */
     private fun showFriendInfo() {
         val shown = user ?: return
-        val mutual = shown.friends.filter { it in myFriendUids && it != Backend.myUid }
+        val mutual = theirFriends.filter { it in myFriendUids && it != Backend.myUid }
 
-        val count = shown.friends.size
+        val count = theirFriends.size
         val line = friendCountText(this, count)
         if (mutual.isEmpty()) {
             countLine.text = line
@@ -161,8 +162,7 @@ class UserProfileActivity : AppCompatActivity() {
             val circle = mutualAvatars[i]
             if (i < named.size) {
                 setVisible(circle, true)
-                circle.text = named[i].initials
-                circle.backgroundTintList = ColorStateList.valueOf(getColor(named[i].color))
+                bindAvatar(circle, named[i].uid, named[i].name)
             } else {
                 circle.visibility = View.INVISIBLE
             }
@@ -180,7 +180,7 @@ class UserProfileActivity : AppCompatActivity() {
             val tile = photoTiles.getChildAt(i) as ImageView
             if (i < posts.size) {
                 setVisible(tile, true)
-                PostImages.show(tile, posts[i].id, posts[i].imageBase64!!)
+                PostImages.showPostImage(tile, posts[i].id, 0)
             } else {
                 // Keep the tile's place so the pictures keep their size, but leave it empty
                 tile.visibility = View.INVISIBLE

@@ -16,7 +16,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.firestore.ListenerRegistration
 
 // Screen 18: notifications tab, live from Firestore (see Notifications.kt).
 // New ones (not seen before this visit) sit on the tinted band, the rest are under "Earlier".
@@ -170,10 +169,7 @@ class NotificationsActivity : AppCompatActivity() {
     }
 
     private fun bindRow(row: View, notice: Notice, isNew: Boolean) {
-        row.findViewById<TextView>(R.id.tvInitials).apply {
-            text = initialsOf(notice.fromName)
-            backgroundTintList = ColorStateList.valueOf(getColor(avatarColorOf(notice.fromUid)))
-        }
+        bindAvatar(row.findViewById(R.id.tvInitials), notice.fromUid, notice.fromName)
         row.findViewById<TextView>(R.id.tvText).text = message(notice)
 
         val time = row.findViewById<TextView>(R.id.tvTime)
@@ -187,7 +183,8 @@ class NotificationsActivity : AppCompatActivity() {
         val badge = row.findViewById<ImageView>(R.id.notifBadge)
         when (notice.type) {
             "like" -> showBadge(badge, R.color.love, R.drawable.ic_heart_filled)
-            "comment", "story_reply" -> showBadge(badge, R.color.avatar_green, R.drawable.ic_comment)
+            "comment", "reply", "story_reply" -> showBadge(badge, R.color.avatar_green, R.drawable.ic_comment)
+            "screenshot" -> showBadge(badge, R.color.rust, R.drawable.ic_eye)
             "request" -> showBadge(badge, R.color.teal, R.drawable.ic_user)
             "accepted" -> showBadge(badge, R.color.avatar_indigo, R.drawable.ic_friends)
             "story_like" -> when (notice.text) {
@@ -203,7 +200,7 @@ class NotificationsActivity : AppCompatActivity() {
         // The three dots at the end of the row
         (row as LinearLayout).getChildAt(2).setOnClickListener {
             AlertDialog.Builder(this)
-                .setItems(arrayOf("Remove this notification")) { _, _ -> Backend.removeNotice(notice.id) }
+                .setItems(arrayOf("Remove this notification")) { _, _ -> Backend.removeNotice(Backend.myUid ?: "", notice.id) }
                 .show()
         }
     }
@@ -222,6 +219,8 @@ class NotificationsActivity : AppCompatActivity() {
             when (notice.type) {
                 "like" -> if (quote.isEmpty()) " liked your post." else " liked your post$quote"
                 "comment" -> " commented on your post$quote"
+                "reply" -> " replied to your comment$quote"
+                "screenshot" -> " took a screenshot of your chat."
                 "request" -> " sent you a friend request."
                 "accepted" -> " accepted your friend request."
                 "story_like" -> when (notice.text) {
@@ -254,12 +253,13 @@ class NotificationsActivity : AppCompatActivity() {
     /** Tapping a notification opens what it is about. */
     private fun open(notice: Notice) {
         when (notice.type) {
-            "like", "comment" -> {
+            "like", "comment", "reply" -> {
                 val intent = Intent(this, CommentsActivity::class.java)
                 intent.putExtra(EXTRA_POST_ID, notice.refId)
                 startActivity(intent)
             }
             "request", "accepted" -> openUserProfile(this, notice.fromUid)
+            "screenshot" -> openChat(this, notice.fromUid)
             "story_like", "story_reply" -> openScreen(this, MyStoryActivity::class.java)
         }
     }
