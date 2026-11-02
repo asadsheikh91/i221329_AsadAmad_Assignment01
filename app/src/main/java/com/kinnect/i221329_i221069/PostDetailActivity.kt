@@ -9,7 +9,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.firestore.ListenerRegistration
 
 // Screen 5: one post with the reaction picker open. It is reached by holding the Like button of a post
 // in the feed. Pick a reaction to react (it is saved on the post and the author is notified); tap the dim
@@ -88,10 +87,7 @@ class PostDetailActivity : AppCompatActivity() {
 
         // Header: avatar, bold name, time
         val header = findViewById<ViewGroup>(R.id.postHeader)
-        (header.getChildAt(0) as TextView).apply {
-            text = initialsOf(post.authorName)
-            backgroundTintList = ColorStateList.valueOf(getColor(avatarColorOf(post.authorId)))
-        }
+        bindAvatar(header.getChildAt(0) as TextView, post.authorId, post.authorName)
         val column = header.getChildAt(1) as ViewGroup
         (column.getChildAt(0) as TextView).text = boldThen(this, post.authorName, "")
         ((column.getChildAt(1) as ViewGroup).getChildAt(0) as TextView).text = timeAgo(post.time) + " ·"
@@ -101,9 +97,9 @@ class PostDetailActivity : AppCompatActivity() {
         setVisible(text, post.text.isNotEmpty())
 
         val photo = findViewById<ImageView>(R.id.photo)
-        if (post.imageBase64 != null) {
+        if (post.imageCount > 0) {
             setVisible(photo, true)
-            PostImages.show(photo, post.id, post.imageBase64)
+            PostImages.showPostImage(photo, post.id, 0)
         } else {
             setVisible(photo, false)
         }
@@ -111,6 +107,7 @@ class PostDetailActivity : AppCompatActivity() {
         // Counts: [reaction circles, who reacted, number of comments]
         val counts = findViewById<ViewGroup>(R.id.counts)
         setVisible(counts.getChildAt(0), post.likedBy.isNotEmpty())
+        showReactionCircles(counts.getChildAt(0) as ViewGroup, post)
         (counts.getChildAt(1) as TextView).text = likesText(post)
         (counts.getChildAt(2) as TextView).text = when (post.commentCount) {
             0 -> ""
@@ -145,10 +142,7 @@ class PostDetailActivity : AppCompatActivity() {
             return
         }
         val row = section.getChildAt(2) as ViewGroup
-        (row.getChildAt(0) as TextView).apply {
-            text = initialsOf(comment.authorName)
-            backgroundTintList = ColorStateList.valueOf(getColor(avatarColorOf(comment.authorId)))
-        }
+        bindAvatar(row.getChildAt(0) as TextView, comment.authorId, comment.authorName)
         val bubble = row.getChildAt(1) as ViewGroup
         (bubble.getChildAt(0) as TextView).text = comment.authorName
         (bubble.getChildAt(1) as TextView).text = comment.text
