@@ -5,13 +5,13 @@ plugins {
 }
 
 android {
-    namespace = "com.asadamad.i221329"
+    namespace = "com.kinnect.i221329_i221069"
     compileSdk {
         version = release(37)
     }
 
     defaultConfig {
-        applicationId = "com.asadamad.i221329"
+        applicationId = "com.kinnect.i221329_i221069"
         minSdk = 24
         targetSdk = 37
         versionCode = 1
