@@ -1,0 +1,14 @@
+{
+  "name": "kinnect-notification-sender",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Sends a push notification (Firebase Cloud Messaging) for every request the app writes into pushQueue/",
+  "scripts": {
+    "start": "node sender.mjs",
+    "test": "node test.mjs"
+  },
+  "dependencies": {
+    "firebase-admin": "^13.0.0"
+  }
+}

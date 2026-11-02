@@ -1,87 +1,98 @@
-# Firebase checklist: from this folder to a running Kinnect
+# Checklist: from this folder to a running Kinnect
 
-About 10 minutes. The free Spark plan is enough (no card, no Firebase Storage, no Cloud Functions).
-Tick each box in order. The app will not build until step 3 is done.
+About 20 minutes. Everything is free (Firebase Spark plan, Agora free minutes). Tick each box in order; the app will not
+build until step 3 is done.
 
 ## 1. Create the Firebase project
 
-- [ ] Open <https://console.firebase.google.com> and sign in with a Google account.
-- [ ] **Create a project** (any name, for example `kinnect`). Google Analytics can be switched off.
+- [ ] <https://console.firebase.google.com> > **Create a project** (for example `kinnect`). Analytics can be off.
 
-## 2. Register the Android app
+## 2. Turn on the three services (before you download the config file!)
 
-- [ ] In the project, click the **Android** icon (**Add app**).
-- [ ] **Android package name:** `com.asadamad.i221329` (it must match exactly).
-- [ ] App nickname: anything. SHA-1: leave empty (not needed for email and password sign-in).
-- [ ] Click **Register app**.
+- [ ] **Build > Authentication > Get started > Sign-in method**: enable **Email/Password** (the first switch) and Save.
+- [ ] **Build > Realtime Database > Create database**: choose a location near you, start in **locked mode**.
+      Do this *before* step 3: the config file only contains your database address if the database already exists.
+- [ ] **Cloud Messaging** needs nothing to switch on (it is part of every project).
 
-## 3. Put `google-services.json` in the project
+## 3. Register the Android app and add `google-services.json`
 
-- [ ] Download **`google-services.json`** from that step.
-- [ ] Copy it into the **`app/`** folder, next to `app/build.gradle.kts`:
+- [ ] Project overview > **Add app > Android**. Package name: `com.kinnect.i221329_i221069` (it must match exactly; it is the
+      `applicationId` in `app/build.gradle.kts`). Register.
+- [ ] Download **`google-services.json`** and copy it into the **`app/`** folder (next to `app/build.gradle.kts`).
+- [ ] Open the file and check that it contains `"firebase_url": "https://...firebasedatabase.app"` or `...firebaseio.com`.
+      If it does not, the database was created after the file was made: download the file again.
+- [ ] Never commit this file (it is already in `.gitignore`).
+
+## 4. Publish the security rules
+
+- [ ] Realtime Database > **Rules** tab. Delete what is there, paste the **whole contents of `database.rules.json`**, **Publish**.
+      Without the rules every read and write is refused ("permission denied").
+
+## 5. Agora (voice and video calls)
+
+- [ ] <https://console.agora.io> > create an account > **Create project**. Authentication: **Testing mode: App ID**
+      (not "Secured mode"). Copy the **App ID**.
+- [ ] Create or open the file **`local.properties`** in the project root (next to `settings.gradle.kts`) and add one line:
 
   ```
-  i221329_AsadAmad_Assignment01-main/
-    app/
-      build.gradle.kts
-      google-services.json     <-- here
-      src/
+  AGORA_APP_ID=paste-your-app-id-here
   ```
-- [ ] Skip the console's "add the SDK" instructions. The Gradle files are already set up.
-- [ ] Do not commit this file to a public repository (it holds your project's keys).
+  This file is git-ignored, so the App ID is never committed. Without it a call ends at once with "Connection lost".
 
-## 4. Turn on sign-in
+## 6. Push notifications (FCM)
 
-- [ ] **Build > Authentication > Get started > Sign-in method**.
-- [ ] Enable **Email/Password** (only the first switch) and **Save**.
+The phone side is already in the app. Something has to turn "a message was sent" into a push; choose one:
 
-## 5. Create the database
+**A. On your laptop (free, recommended for the demo)**
 
-- [ ] **Build > Firestore Database > Create database**.
-- [ ] Choose a location close to you (it cannot be changed later).
-- [ ] Choose **production mode**. The rules in the next step replace the default ones.
+- [ ] Firebase console > Project settings > **Service accounts > Generate new private key**. Save the file as
+      `notification-sender/service-account.json` (git-ignored; never commit or share it).
+- [ ] In a terminal: `cd notification-sender`, `npm install`, `npm start`. Leave it running while you demo.
+      It prints one line for every push it sends.
 
-## 6. Publish the security rules
+**B. Cloud Function (nothing runs on your laptop; needs the Blaze plan with a card, usage stays free)**
 
-- [ ] In Firestore open the **Rules** tab.
-- [ ] Delete what is there, paste the **whole contents of `firestore.rules`** (project root) and click **Publish**.
-- [ ] You should see no red error markers. These rules cover profiles, friends, chats, posts and reactions,
-      stories, notifications, marketplace listings and calls. Without them, features fail with
-      "permission denied" and nothing is saved.
+- [ ] `npm install -g firebase-tools`, `firebase login`, `cd functions && npm install && cd ..`, `firebase deploy --only functions`
 
 ## 7. Build and run
 
-- [ ] Open the project in Android Studio and let Gradle sync.
-- [ ] Run on **two devices** (two phones, or one phone and an emulator), because friends, chat, calls and
-      notifications need two accounts.
-- [ ] If the build fails with `AccessDeniedException` inside `app/build`, OneDrive is locking the folder.
-      Pause OneDrive sync or move the project out of OneDrive, then **Build > Clean Project**.
+- [ ] Open the project in Android Studio, let Gradle sync, run on **two devices** (two phones, or a phone and an emulator
+      with Google Play services). Allow notifications, camera and microphone when asked.
+- [ ] If the build fails with `AccessDeniedException` inside `app/build`, OneDrive is locking the folder: pause OneDrive sync
+      or move the project out of OneDrive, then **Build > Clean Project**.
 
-## 8. First-run test (about 5 minutes)
+## 8. First-run test (about 10 minutes, two devices A and B)
 
-On each device choose **Create new account**, with a different email each (password of 6 or more characters).
-Call the devices **A** and **B**.
+On each device **Create new account** (different emails, password of 6 or more characters; watch the strength bar change while typing).
 
-- [ ] **A:** search for B's name, tap **+**. **B:** the bell shows **1**; open it and tap **Confirm**.
-- [ ] **A:** the bell shows **1** ("B accepted your friend request").
-- [ ] **A:** Home > **What's on your mind** > write something, add a photo > **Post**. **B** sees it in the feed.
-- [ ] **B:** like it, then hold **Like** and choose **Love**. **A:** a notification arrives.
-- [ ] **B:** comment on it. **A:** a notification arrives.
-- [ ] **A:** Home > **Create story** > allow the camera > shutter (or the gallery thumbnail) > **Aa** to add text >
-      the arrow. **B:** the story appears on the Home row; open it and tap **Love** or type a reply.
-- [ ] **A:** open **Your story**: "Seen by 1" and the chat shows B's reply.
-- [ ] **A:** Marketplace > **Sell** > fill in the form > **List it**. **B** sees it and can **Message seller**.
-- [ ] **A:** open a chat with B and tap the phone icon. **B** rings (the app must be open); tap the green button.
+- [ ] After Create account you land on **Set up your profile**. Pick a username. On B try A's username: you get "That username is taken".
+- [ ] **Splash** stays 5 seconds, then goes to Home (logged in) or Log in. Close and reopen the app: it goes straight to Home.
+- [ ] **A:** Search > type part of B's name or username > **+**. **B:** the bell shows 1 > open it > **Confirm**.
+- [ ] **A:** Home > What's on your mind > Photo/video > choose **3 or more photos** (they get numbers 1, 2, 3...) > Next > Post.
+      **B** sees the collage with **+N**. Hold **Like** on it and pick a reaction. **A** sees the reaction summary change.
+- [ ] **B:** Comment > Reply under a comment > Like a comment > camera icon to add a photo. Watch "Replying to ... Cancel".
+- [ ] **A:** Create story > tap the shutter for a photo, or hold it for a short video > Aa for text > the arrow.
+      **B** sees it on Home. It disappears after 24 hours.
+- [ ] **A and B:** open each other's chat. The Chats list shows a **green dot** and the chat says **Active now**.
+      Close B's app: A sees B go offline.
+- [ ] **Chat:** send text, a photo (Photos icon) and a post (the + icon). **Long-press a message**: Reply, Heart, Edit, Delete
+      (Edit and Delete disappear after 5 minutes; an edited message shows "Edited"). Double-tap a message for a heart.
+- [ ] **A:** phone icon for a voice call, camera icon for a video call. **B** rings (app open), accept, talk, hang up.
+- [ ] **Push:** put B's app in the background (not swiped away if the sender is not running). **A** sends a message: B gets a notification.
+- [ ] **Screenshot:** on A take a screenshot while the chat is open. The chat shows "A took a screenshot" and B is notified.
+- [ ] **Profile:** Edit profile > profile picture and cover photo > Save. The picture appears in every avatar.
+- [ ] **Log out** (Menu): you are marked offline and Back from Log in leaves the app.
 
 ## If something does not work
 
 | What you see | Likely cause |
 | --- | --- |
-| Build error "google-services.json is missing" | Step 3: wrong folder, or wrong file name |
-| Sign-up says "An internal error" or "configuration not found" | Step 4: Email/Password is not enabled |
-| Posts, stories or notifications do not appear or save | Step 6: rules not published (or pasted partly) |
-| Sign-up works but the profile is missing | Step 5 or 6: database not created, or rules not published |
-| Calls connect but there is no sound or picture | Strict mobile network: add a TURN server (see `BACKEND_SETUP.md`) |
+| Build error "google-services.json is missing" | Step 3: wrong folder or file name |
+| Everything is empty or "permission denied" in the log | Step 4: rules not published; or step 2 database created after the config file (download it again) |
+| Sign-up says "An internal error" / "configuration not found" | Step 2: Email/Password is not enabled |
+| A call ends at once, or never connects | Step 5: `AGORA_APP_ID` missing in `local.properties` (rebuild), or the Agora project is in secured mode |
+| No push notification | Step 6: the sender is not running; or notifications are not allowed for Kinnect in the phone settings |
+| Two people cannot see each other's posts | They are not friends yet: the feed shows only you and your friends |
 | A device never rings | Calls ring only while the app is open on that device |
 
-More detail on how everything fits together is in `BACKEND_SETUP.md`.
+More detail on how everything fits together: `BACKEND_SETUP.md`. To study for the demo and the exam: `EXAM_GUIDE.md`.

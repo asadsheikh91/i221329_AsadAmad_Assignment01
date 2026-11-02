@@ -10,14 +10,15 @@ activityKtx = "1.13.0"
 constraintlayout = "2.2.2"
 googleServices = "4.5.0"
 firebaseBom = "34.19.0"
-streamWebrtc = "1.3.10"
+agora = "4.6.2"
 
 [libraries]
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth" }
-firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore" }
-# Prebuilt WebRTC for Android (org.webrtc.*), used by the voice and video calls
-stream-webrtc = { group = "io.getstream", name = "stream-webrtc-android", version.ref = "streamWebrtc" }
+firebase-database = { group = "com.google.firebase", name = "firebase-database" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging" }
+# Agora: real-time voice and video calls (io.agora.rtc2.*)
+agora-rtc = { group = "io.agora.rtc", name = "full-rtc-basic", version.ref = "agora" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

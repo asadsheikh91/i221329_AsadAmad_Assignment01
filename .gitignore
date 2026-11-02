@@ -16,3 +16,11 @@ local.properties
 
 # Your Firebase project keys: add your own file here (see FIREBASE_CHECKLIST.md), never commit it
 /app/google-services.json
+
+# Push notification sender
+notification-sender/node_modules/
+notification-sender/service-account.json
+notification-sender/package-lock.json
+functions/node_modules/
+functions/package-lock.json
+*-debug.log
