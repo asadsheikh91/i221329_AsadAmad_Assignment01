@@ -9,6 +9,7 @@ import android.graphics.ColorMatrixColorFilter
 import android.graphics.Matrix
 import android.graphics.Paint
 import android.media.ExifInterface
+import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Handler
 import android.os.Looper
@@ -142,6 +143,55 @@ object ImageTools {
                     filtered
                 }
                 EncodedPicture(toBase64(filtered, 600_000), toBase64(small, 40_000))
+            }
+            main.post { done(result) }
+        }
+    }
+
+    /** A video longer than about 10 seconds does not fit into the database as text. */
+    const val MAX_VIDEO_BYTES = 4_500_000
+
+    /** The first picture of a video (null when it cannot be read). */
+    fun videoFrame(context: Context, uri: Uri): Bitmap? {
+        val retriever = MediaMetadataRetriever()
+        return try {
+            retriever.setDataSource(context, uri)
+            val frame = retriever.getFrameAtTime(0, MediaMetadataRetriever.OPTION_CLOSEST_SYNC)
+            if (frame == null) {
+                null
+            } else {
+                val scale = 1080f / maxOf(frame.width, frame.height)
+                if (scale < 1f) Bitmap.createScaledBitmap(frame, (frame.width * scale).toInt(), (frame.height * scale).toInt(), true) else frame
+            }
+        } catch (e: Exception) {
+            null
+        } finally {
+            retriever.release()
+        }
+    }
+
+    /**
+     * Reads a video clip and turns it into Base64 text; [EncodedPicture.thumb] is a small picture of its first frame.
+     * [done] gets null when the clip is too big (more than about 10 seconds) or cannot be read.
+     */
+    fun encodeVideo(context: Context, uri: Uri, done: (EncodedPicture?) -> Unit) {
+        worker.execute {
+            val result = try {
+                val bytes = context.applicationContext.contentResolver.openInputStream(uri)?.use { it.readBytes() }
+                val frame = videoFrame(context, uri)
+                if (bytes == null || frame == null || bytes.size > MAX_VIDEO_BYTES) {
+                    null
+                } else {
+                    val scale = 360f / maxOf(frame.width, frame.height)
+                    val small = if (scale < 1f) {
+                        Bitmap.createScaledBitmap(frame, (frame.width * scale).toInt(), (frame.height * scale).toInt(), true)
+                    } else {
+                        frame
+                    }
+                    EncodedPicture(Base64.encodeToString(bytes, Base64.NO_WRAP), toBase64(small, 40_000))
+                }
+            } catch (e: Exception) {
+                null
             }
             main.post { done(result) }
         }

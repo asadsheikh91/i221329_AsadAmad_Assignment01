@@ -8,7 +8,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.firestore.ListenerRegistration
 
 // Screen 12: your own stories (the ones from the last 24 hours), with who has seen the current one
 // and the hearts that came in. Opened after sharing a story, from the Home row and from a notification.
@@ -22,6 +21,7 @@ class MyStoryActivity : AppCompatActivity() {
     private var current: Story? = null
 
     private lateinit var art: ImageView
+    private lateinit var media: StoryMediaView
     private lateinit var subtitle: TextView
     private lateinit var sticker: TextView
     private lateinit var hearts: ViewGroup
@@ -40,12 +40,14 @@ class MyStoryActivity : AppCompatActivity() {
         val header = card.getChildAt(2) as ViewGroup
         subtitle = (header.getChildAt(1) as ViewGroup).getChildAt(1) as TextView
         // The avatar of the design shows the sample's initials; yours replace them
-        Backend.me?.let { (header.getChildAt(0) as TextView).text = it.initials }
+        Backend.me?.let { bindAvatar(header.getChildAt(0) as TextView, it.uid, it.name) }
         sticker = card.getChildAt(3) as TextView
         hearts = card.getChildAt(4) as ViewGroup
         val bottom = column.getChildAt(1) as ViewGroup
         viewers = bottom.getChildAt(0) as ViewGroup
         seenBy = viewers.getChildAt(1) as TextView
+        // Photo or video of the story (added after the lookups above, because it takes a place in the card)
+        media = StoryMediaView(this, card, art)
 
         // Nothing of the sample story stays on screen while the real one loads
         art.setImageDrawable(null)
@@ -95,6 +97,9 @@ class MyStoryActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         player?.stop()
+        if (::media.isInitialized) {
+            media.release()
+        }
     }
 
     /** (Re)starts at the newest story; the older ones are before it. */
@@ -113,12 +118,13 @@ class MyStoryActivity : AppCompatActivity() {
             { show(it) },
             { finish() }
         )
+        player?.onHoldChanged = { media.setHeld(it) }
         player?.start(mine.size - 1)
     }
 
     private fun show(story: Story) {
         current = story
-        showStoryPicture(art, story) { current?.id == story.id }
+        media.show(story) { duration -> player?.videoReady(story.id, duration) }
         subtitle.text = timeAgo(story.time) + " · " + audienceLabel(story)
         sticker.text = story.text
         setVisible(sticker, story.text.isNotEmpty())
@@ -142,8 +148,7 @@ class MyStoryActivity : AppCompatActivity() {
                 setVisible(avatar, false)
             } else {
                 setVisible(avatar, true)
-                avatar.text = viewer.initials
-                avatar.backgroundTintList = android.content.res.ColorStateList.valueOf(getColor(viewer.color))
+                bindAvatar(avatar, viewer.uid, viewer.name)
             }
         }
 

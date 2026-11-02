@@ -14,10 +14,15 @@ import androidx.core.content.FileProvider
 import java.io.File
 
 /** A new empty file where the phone's camera app can save a photo (see res/xml/file_paths.xml). */
-fun newCameraPhotoUri(context: Context): Uri {
+fun newCameraPhotoUri(context: Context): Uri = newCameraFileUri(context, "photo_", ".jpg")
+
+/** A new empty file for a recorded video. */
+fun newCameraVideoUri(context: Context): Uri = newCameraFileUri(context, "video_", ".mp4")
+
+private fun newCameraFileUri(context: Context, prefix: String, suffix: String): Uri {
     val folder = File(context.cacheDir, "camera")
     folder.mkdirs()
-    val file = File.createTempFile("photo_", ".jpg", folder)
+    val file = File.createTempFile(prefix, suffix, folder)
     return FileProvider.getUriForFile(context, context.packageName + ".fileprovider", file)
 }
 
@@ -41,6 +46,14 @@ class StoryCameraActivity : AppCompatActivity() {
     private val takePhotoLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { taken ->
         val uri = photoUri
         if (taken && uri != null) {
+            openEditor(uri)
+        }
+    }
+
+    // The camera app answers when a video has been recorded
+    private val videoLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        val uri = photoUri
+        if (it.resultCode == RESULT_OK && uri != null) {
             openEditor(uri)
         }
     }
@@ -75,6 +88,12 @@ class StoryCameraActivity : AppCompatActivity() {
 
         // Shutter takes a photo, the gallery thumbnail opens the photo picker
         findViewById<android.view.View>(R.id.btnShutter).setOnClickListener { takePhoto() }
+        // Holding the shutter records a video of up to 10 seconds
+        findViewById<android.view.View>(R.id.btnShutter).setOnLongClickListener {
+            recordVideo()
+            true
+        }
+        Toast.makeText(this, "Tap for a photo, hold for a 10 second video", Toast.LENGTH_SHORT).show()
         findViewById<android.view.View>(R.id.btnGallery).setOnClickListener {
             pickerLauncher.launch(Intent(this, PhotoPickerActivity::class.java))
         }
@@ -99,6 +118,27 @@ class StoryCameraActivity : AppCompatActivity() {
         photoUri = uri
         try {
             takePhotoLauncher.launch(uri)
+        } catch (e: Exception) {
+            Toast.makeText(this, "No camera app found. Use the gallery instead.", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    /** Opens the phone's camera app in video mode (short, low quality, so the clip fits into the database). */
+    private fun recordVideo() {
+        if (!hasCameraPermission()) {
+            requestPermissionLauncher.launch(Manifest.permission.CAMERA)
+            return
+        }
+        val uri = newCameraVideoUri(this)
+        photoUri = uri
+        val intent = Intent(android.provider.MediaStore.ACTION_VIDEO_CAPTURE)
+        intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, uri)
+        intent.putExtra(android.provider.MediaStore.EXTRA_DURATION_LIMIT, 10)
+        intent.putExtra(android.provider.MediaStore.EXTRA_VIDEO_QUALITY, 0)
+        intent.putExtra(android.provider.MediaStore.EXTRA_SIZE_LIMIT, ImageTools.MAX_VIDEO_BYTES.toLong())
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+        try {
+            videoLauncher.launch(intent)
         } catch (e: Exception) {
             Toast.makeText(this, "No camera app found. Use the gallery instead.", Toast.LENGTH_LONG).show()
         }

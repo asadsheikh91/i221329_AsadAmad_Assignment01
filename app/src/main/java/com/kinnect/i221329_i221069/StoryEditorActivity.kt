@@ -12,7 +12,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.firestore.ListenerRegistration
 
 // Screen 10: story editor. The photo comes from the camera or the picker. The tools at the top add a text sticker,
 // emoji, a filter or the names of friends; the share targets at the bottom publish the story (see Stories.kt).
@@ -26,6 +25,7 @@ class StoryEditorActivity : AppCompatActivity() {
     private val tagged = ArrayList<String>()     // names of the friends tagged in the story
     private var filter = ImageTools.FILTER_NONE
     private var sharing = false
+    private var isVideo = false                  // the story is a short video, not a photo
 
     private var people: Map<String, UserInfo> = emptyMap()
     private var friendUids: List<String> = emptyList()
@@ -42,6 +42,8 @@ class StoryEditorActivity : AppCompatActivity() {
             return
         }
 
+        isVideo = contentResolver.getType(photoUri!!)?.startsWith("video/") == true
+
         // The views of the design have no ids, so they are found by their place in the layout:
         // root > column > [photo card, share row]; the photo card holds picture, close, tools, sticker
         val column = childGroup(findViewById(R.id.root), 0)
@@ -53,12 +55,28 @@ class StoryEditorActivity : AppCompatActivity() {
 
         // The photo and an empty sticker (the design's "Saturday plans" was only a sample)
         photo.setImageDrawable(null)
-        ImageTools.load(this, photoUri!!, 1080) { bitmap ->
-            if (bitmap == null) {
-                Toast.makeText(this, "Could not read that photo", Toast.LENGTH_SHORT).show()
-                finish()
-            } else {
-                photo.setImageBitmap(bitmap)
+        if (isVideo) {
+            // A video shows its first picture here
+            Thread {
+                val frame = ImageTools.videoFrame(this, photoUri!!)
+                runOnUiThread {
+                    if (frame == null) {
+                        Toast.makeText(this, "Could not read that video", Toast.LENGTH_SHORT).show()
+                        finish()
+                    } else {
+                        photo.setImageBitmap(frame)
+                        Toast.makeText(this, "Video story", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }.start()
+        } else {
+            ImageTools.load(this, photoUri!!, 1080) { bitmap ->
+                if (bitmap == null) {
+                    Toast.makeText(this, "Could not read that photo", Toast.LENGTH_SHORT).show()
+                    finish()
+                } else {
+                    photo.setImageBitmap(bitmap)
+                }
             }
         }
         refreshSticker()
@@ -76,7 +94,7 @@ class StoryEditorActivity : AppCompatActivity() {
         tools.getChildAt(4).setOnClickListener { pickFilter() }
 
         // Share targets: "Your story" and the arrow share with all friends, "Close friends" asks who
-        Backend.me?.let { findTextExact(shareRow, "JW")?.text = it.initials }
+        Backend.me?.let { me -> findTextExact(shareRow, "JW")?.let { bindAvatar(it, me.uid, me.name) } }
         findViewById<View>(R.id.btnYourStory).setOnClickListener { share(AUDIENCE_FRIENDS, emptyList()) }
         findViewById<View>(R.id.btnShare).setOnClickListener { share(AUDIENCE_FRIENDS, emptyList()) }
         shareRow.getChildAt(1).setOnClickListener { chooseCloseFriends() }
@@ -149,6 +167,10 @@ class StoryEditorActivity : AppCompatActivity() {
     }
 
     private fun pickFilter() {
+        if (isVideo) {
+            Toast.makeText(this, "Effects work on photos", Toast.LENGTH_SHORT).show()
+            return
+        }
         AlertDialog.Builder(this)
             .setTitle("Effects")
             .setSingleChoiceItems(ImageTools.FILTER_NAMES, filter) { dialog, which ->
@@ -221,23 +243,31 @@ class StoryEditorActivity : AppCompatActivity() {
         sharing = true
         Toast.makeText(this, "Sharing your story...", Toast.LENGTH_SHORT).show()
 
-        ImageTools.encodePicture(this, uri, filter) { picture ->
+        // The same steps for a photo and a video: shrink / read it, then publish it
+        val publish: (EncodedPicture?) -> Unit = { picture ->
             if (picture == null) {
                 sharing = false
-                Toast.makeText(this, "Could not read that photo", Toast.LENGTH_SHORT).show()
-                return@encodePicture
-            }
-            Backend.createStory(picture, composedText(), audience, audienceUids) { shared ->
-                sharing = false
-                if (shared) {
-                    // Tell the camera we are done, then show the story
-                    setResult(RESULT_OK)
-                    startActivity(Intent(this, MyStoryActivity::class.java))
-                    finish()
-                } else {
-                    Toast.makeText(this, "Could not share your story. Check your connection.", Toast.LENGTH_LONG).show()
+                val message = if (isVideo) "That video is too long. Keep it under 10 seconds." else "Could not read that photo"
+                Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+            } else {
+                val type = if (isVideo) STORY_VIDEO else STORY_IMAGE
+                Backend.createStory(picture.full, picture.thumb, type, composedText(), audience, audienceUids) { shared ->
+                    sharing = false
+                    if (shared) {
+                        // Tell the camera we are done, then show the story
+                        setResult(RESULT_OK)
+                        startActivity(Intent(this, MyStoryActivity::class.java))
+                        finish()
+                    } else {
+                        Toast.makeText(this, "Could not share your story. Check your connection.", Toast.LENGTH_LONG).show()
+                    }
                 }
             }
+        }
+        if (isVideo) {
+            ImageTools.encodeVideo(this, uri, publish)
+        } else {
+            ImageTools.encodePicture(this, uri, filter, publish)
         }
     }
 }

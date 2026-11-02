@@ -13,7 +13,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.firestore.ListenerRegistration
 
 // Screen 11: watching a friend's stories (opened from the Home row with the friend's uid).
 // Their stories play one after the other. Reply in the box (it goes to your chat with them) or
@@ -30,6 +29,7 @@ class StoryViewerActivity : AppCompatActivity() {
 
     private lateinit var authorUid: String
     private lateinit var art: ImageView
+    private lateinit var media: StoryMediaView
     private lateinit var avatar: TextView
     private lateinit var nameView: TextView
     private lateinit var timeView: TextView
@@ -58,6 +58,8 @@ class StoryViewerActivity : AppCompatActivity() {
         sticker = card.getChildAt(3) as TextView
         val replyRow = column.getChildAt(1) as ViewGroup
         replyField = replyRow.getChildAt(0) as EditText
+        // Photo or video of the story (added after the lookups above, because it takes a place in the card)
+        media = StoryMediaView(this, card, art)
 
         // Nothing of the sample story stays on screen while the real one loads
         art.setImageDrawable(null)
@@ -115,6 +117,9 @@ class StoryViewerActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         player?.stop()
+        if (::media.isInitialized) {
+            media.release()
+        }
     }
 
     /** Starts the player once the stories and the friend list have both arrived (only the first time). */
@@ -140,6 +145,7 @@ class StoryViewerActivity : AppCompatActivity() {
             { show(it) },
             { finish() }
         )
+        player?.onHoldChanged = { media.setHeld(it) }
         // Start with the first story that has not been watched yet
         val firstUnseen = theirs.indexOfFirst { !it.seenByMe }
         player?.start(if (firstUnseen >= 0) firstUnseen else 0)
@@ -147,10 +153,9 @@ class StoryViewerActivity : AppCompatActivity() {
 
     private fun show(story: Story) {
         current = story
-        showStoryPicture(art, story) { current?.id == story.id }
+        media.show(story) { duration -> player?.videoReady(story.id, duration) }
 
-        avatar.text = initialsOf(story.authorName)
-        avatar.backgroundTintList = ColorStateList.valueOf(getColor(avatarColorOf(story.authorId)))
+        bindAvatar(avatar, story.authorId, story.authorName)
         nameView.text = story.authorName
         timeView.text = timeAgo(story.time) + " ·"
 
