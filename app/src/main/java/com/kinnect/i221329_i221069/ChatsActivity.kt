@@ -10,14 +10,16 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.firestore.ListenerRegistration
 
 // Screen 20: list of conversations (newest first) with your friends along the top.
+// Every row shows the last message and how long ago it was, a teal dot and bold text when there is something
+// unread, and a green dot on the picture while the person is online (live from the presence data).
 class ChatsActivity : AppCompatActivity() {
 
     private var people: Map<String, UserInfo> = emptyMap()
     private var chats: List<ChatSummary> = emptyList()
     private var friendUids: List<String> = emptyList()
+    private var online: Set<String> = emptySet()
     private val listeners = ArrayList<ListenerRegistration>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +52,10 @@ class ChatsActivity : AppCompatActivity() {
             friendUids = list.filter { it.accepted }.map { it.otherUid }
             render()
         })
+        listeners.add(Backend.listenOnline {
+            online = it
+            render()
+        })
     }
 
     override fun onStop() {
@@ -61,17 +67,15 @@ class ChatsActivity : AppCompatActivity() {
     private fun render() {
         val inflater = LayoutInflater.from(this)
 
-        // Friends strip
+        // Friends strip: online friends first, each with a green dot while they are online
         val strip = findViewById<LinearLayout>(R.id.friendsStrip)
         strip.removeAllViews()
-        for (uid in friendUids) {
+        for (uid in friendUids.sortedByDescending { it in online }) {
             val user = people[uid] ?: continue
             val item = inflater.inflate(R.layout.item_strip_friend, strip, false)
-            item.findViewById<TextView>(R.id.tvInitials).apply {
-                text = user.initials
-                backgroundTintList = android.content.res.ColorStateList.valueOf(getColor(user.color))
-            }
+            bindAvatar(item.findViewById(R.id.tvInitials), user.uid, user.name)
             item.findViewById<TextView>(R.id.tvName).text = user.name.substringBefore(' ')
+            item.findViewById<View>(R.id.onlineDot).visibility = if (uid in online) View.VISIBLE else View.GONE
             item.setOnClickListener { openChat(this, uid) }
             strip.addView(item)
         }
@@ -91,10 +95,14 @@ class ChatsActivity : AppCompatActivity() {
             val age = timeAgo(chat.lastTime)
             val preview = sender + chat.lastMessage + if (age.isEmpty()) "" else " · $age"
             bindChat(row, user.initials, user.color, user.name, preview)
+            bindAvatar(row.findViewById(R.id.tvInitials), user.uid, user.name)
+            row.findViewById<View>(R.id.onlineDot).visibility = if (user.uid in online) View.VISIBLE else View.GONE
+
+            // Conversations with something new are written in bold and have a teal dot
             if (chat.unread) {
-                // Conversations with something new are written in bold
                 row.findViewById<TextView>(R.id.tvName).setTypeface(null, Typeface.BOLD)
                 row.findViewById<TextView>(R.id.tvPreview).setTypeface(null, Typeface.BOLD)
+                row.findViewById<View>(R.id.unreadDot).visibility = View.VISIBLE
             }
             row.setOnClickListener { openChat(this, user.uid) }
             container.addView(row)
