@@ -5,7 +5,6 @@ import android.content.Intent
 import android.view.View
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import com.google.firebase.firestore.ListenerRegistration
 
 // Small helpers shared by every screen so each Activity stays short.
 
@@ -27,6 +26,9 @@ const val EXTRA_PEER_NAME = "peer_name"
 const val EXTRA_CALL_ID = "call_id"
 const val EXTRA_INCOMING = "incoming"
 const val EXTRA_PHOTO_URI = "photo_uri"
+const val EXTRA_SETUP = "setup"                 // Edit profile opened for a first-time user
+const val EXTRA_PICKED_URIS = "picked_uris"     // the photos chosen in the photo picker
+const val EXTRA_MULTIPLE = "multiple"           // the photo picker may return several photos
 
 // Positions of the five main tabs (Home, Friends, Marketplace, Notifications, Menu)
 const val TAB_HOME = 0

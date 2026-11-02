@@ -1,9 +1,6 @@
 package com.kinnect.i221329_i221069
 
-import com.google.firebase.firestore.DocumentSnapshot.ServerTimestampBehavior
-import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.ListenerRegistration
-import com.google.firebase.firestore.Query
+import com.google.firebase.database.ServerValue
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -41,7 +38,7 @@ fun Backend.createListing(
         done(false)
         return
     }
-    val listing = hashMapOf(
+    val listing = hashMapOf<String, Any?>(
         "sellerId" to uid,
         "sellerName" to name,
         "title" to title,
@@ -51,44 +48,39 @@ fun Backend.createListing(
         "description" to description,
         "imageBase64" to imageBase64,
         "sold" to false,
-        "createdAt" to FieldValue.serverTimestamp()
+        "createdAt" to ServerValue.TIMESTAMP
     )
-    db.collection("listings").add(listing)
+    ref("listings").push().setValue(listing)
         .addOnSuccessListener { done(true) }
         .addOnFailureListener { done(false) }
 }
 
 /** The 60 newest listings, newest first. */
 fun Backend.listenListings(onChange: (List<Listing>) -> Unit): ListenerRegistration {
-    return db.collection("listings")
-        .orderBy("createdAt", Query.Direction.DESCENDING)
-        .limit(60)
-        .addSnapshotListener { snap, _ ->
-            if (snap != null) {
-                onChange(snap.documents.map { doc ->
-                    val time = doc.getTimestamp("createdAt", ServerTimestampBehavior.ESTIMATE)
-                    Listing(
-                        doc.id,
-                        doc.getString("sellerId") ?: "",
-                        doc.getString("sellerName") ?: "Kinnect user",
-                        doc.getString("title") ?: "",
-                        doc.getLong("price") ?: 0L,
-                        doc.getString("place") ?: "",
-                        doc.getString("category") ?: "Other",
-                        doc.getString("description") ?: "",
-                        doc.getString("imageBase64"),
-                        doc.getBoolean("sold") == true,
-                        time?.toDate()?.time ?: 0L
-                    )
-                })
-            }
+    return listen(ref("listings").orderByChild("createdAt").limitToLast(60)) { snap ->
+        val listings = snap.children.map { doc ->
+            Listing(
+                doc.key ?: "",
+                doc.text("sellerId"),
+                doc.text("sellerName").ifEmpty { "Kinnect user" },
+                doc.text("title"),
+                doc.number("price"),
+                doc.text("place"),
+                doc.text("category").ifEmpty { "Other" },
+                doc.text("description"),
+                doc.child("imageBase64").value as? String,
+                doc.flag("sold"),
+                doc.number("createdAt")
+            )
         }
+        onChange(listings.sortedByDescending { it.time })
+    }
 }
 
 fun Backend.setListingSold(listingId: String, sold: Boolean) {
-    db.collection("listings").document(listingId).update("sold", sold)
+    ref("listings/$listingId/sold").setValue(sold)
 }
 
 fun Backend.deleteListing(listingId: String) {
-    db.collection("listings").document(listingId).delete()
+    ref("listings/$listingId").removeValue()
 }
