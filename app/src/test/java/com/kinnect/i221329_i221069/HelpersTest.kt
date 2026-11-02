@@ -65,6 +65,33 @@ class HelpersTest {
     }
 
     @Test
+    fun usernamesAreLettersNumbersAndUnderscoresOnly() {
+        assertTrue(isValidUsername("asad_amad"))
+        assertTrue(isValidUsername("Asad_99"))          // capitals are lowered before they are saved
+        assertFalse(isValidUsername("ab"))              // too short
+        assertFalse(isValidUsername("a".repeat(21)))    // too long
+        assertFalse(isValidUsername("asad.amad"))       // a dot cannot be a key in the Realtime Database
+        assertFalse(isValidUsername("asad amad"))
+        assertFalse(isValidUsername("asad#1"))
+    }
+
+    @Test
+    fun usernameSuggestionComesFromTheName() {
+        assertEquals("aisha_khan", suggestUsername("Aisha Khan"))
+        assertEquals("omar_bin_farooq", suggestUsername("  Omar   bin Farooq "))
+        assertEquals("sara", suggestUsername("Sara!"))
+    }
+
+    @Test
+    fun passwordStrengthGrowsWithBetterPasswords() {
+        assertEquals(0, passwordStrength(""))
+        assertEquals(1, passwordStrength("abcdef"))
+        assertEquals(2, passwordStrength("abcdef12"))
+        assertTrue(passwordStrength("Abcdef12!x") > passwordStrength("abcdef12"))
+        assertEquals(4, passwordStrength("Abcdef12!xyz"))
+    }
+
+    @Test
     fun storyLabelsFollowTheAudience() {
         assertEquals("Friends", audienceLabel(story("me")))
         assertEquals("Close friends", audienceLabel(story("me", AUDIENCE_CLOSE)))
