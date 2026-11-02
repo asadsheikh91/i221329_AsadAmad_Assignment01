@@ -8,32 +8,48 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 
-// Screen 16: edit profile. Save stores the details in Firestore and returns them to the profile screen.
-//   public:  name, username, website, bio and the cover photo      private (only you can read it): phone, gender
+// Screen 16: edit profile.
+//   public:  profile picture, cover photo, name, username, website, bio      private (only you can read it): phone, gender
+// A first-time user (EXTRA_SETUP) lands here right after Create account: they must choose a username that nobody
+// else has before they can reach Home. The username is checked against the database when Save is tapped.
 class EditProfileActivity : AppCompatActivity() {
 
-    private var newCover: String? = null    // the chosen cover photo as Base64, saved together with the profile
-    private var coverLoading = false
+    private var setup = false
+    private var newAvatar: String? = null   // the chosen profile picture as Base64, saved together with the profile
+    private var newCover: String? = null    // the chosen cover photo as Base64
+    private var preparing = 0               // pictures that are still being shrunk
 
-    // Result of the gallery picker: show the chosen picture as the cover photo
-    private val pickCoverLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) {
-        if (it.resultCode == RESULT_OK) {
-            val uri: Uri? = it.data?.data
-            if (uri != null) {
-                coverLoading = true
-                ImageTools.encode(this, uri, 1000, 250_000, ImageTools.FILTER_NONE) { encoded ->
-                    coverLoading = false
-                    if (encoded == null) {
-                        Toast.makeText(this, "Could not read that photo", Toast.LENGTH_SHORT).show()
-                    } else {
-                        newCover = encoded
-                        findViewById<ImageView>(R.id.coverPreview).setImageBitmap(ImageTools.fromBase64(encoded))
-                    }
+    private lateinit var avatarView: TextView
+
+    private val pickAvatar = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        if (uri != null) {
+            preparing++
+            ImageTools.encode(this, uri, 256, 30_000, ImageTools.FILTER_NONE) { encoded ->
+                preparing--
+                if (encoded == null) {
+                    Toast.makeText(this, "Could not read that photo", Toast.LENGTH_SHORT).show()
+                } else {
+                    newAvatar = encoded
+                    ImageTools.fromBase64(encoded)?.let { previewAvatar(avatarView, it) }
+                }
+            }
+        }
+    }
+
+    private val pickCover = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        if (uri != null) {
+            preparing++
+            ImageTools.encode(this, uri, 1000, 250_000, ImageTools.FILTER_NONE) { encoded ->
+                preparing--
+                if (encoded == null) {
+                    Toast.makeText(this, "Could not read that photo", Toast.LENGTH_SHORT).show()
+                } else {
+                    newCover = encoded
+                    findViewById<ImageView>(R.id.coverPreview).setImageBitmap(ImageTools.fromBase64(encoded))
                 }
             }
         }
@@ -42,6 +58,7 @@ class EditProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_edit_profile)
+        setup = intent.getBooleanExtra(EXTRA_SETUP, false)
 
         val root = findViewById<View>(R.id.root)
         val nameField = findViewById<EditText>(R.id.etName)
@@ -59,7 +76,9 @@ class EditProfileActivity : AppCompatActivity() {
         val me = Backend.me
         nameField.setText(me?.name ?: "")
         bioField.setText(me?.bio ?: "")
-        usernameField.setText(me?.username ?: "")
+        // A first-time user gets a suggestion made from their name
+        usernameField.setText(if (me != null && me.username.isEmpty()) suggestUsername(me.name) else (me?.username ?: ""))
+        usernameField.hint = "Choose a unique username"
         websiteField.setText(me?.website ?: "")
         findViewById<EditText>(R.id.etEmail).setText(me?.email ?: "")
         phoneField.setText("")
@@ -68,7 +87,14 @@ class EditProfileActivity : AppCompatActivity() {
             phoneField.setText(phone)
             genderField.setText(gender)
         }
-        me?.let { findTextExact(root, "JW")?.text = it.initials }
+
+        // The profile picture: the avatar circle (it has no id: its text is the design's sample initials)
+        avatarView = findTextExact(root, "JW")!!
+        me?.let { bindAvatar(avatarView, it.uid, it.name) }
+        avatarView.setOnClickListener { pickAvatar.launch("image/*") }
+        allViews(root).filterIsInstance<TextView>()
+            .filter { it.text.toString() == "Edit" && it.id != R.id.btnEditCover }
+            .forEach { it.setOnClickListener { pickAvatar.launch("image/*") } }
 
         // The cover photo that is saved now
         Backend.myUid?.let { uid ->
@@ -79,64 +105,95 @@ class EditProfileActivity : AppCompatActivity() {
             }
         }
 
-        linkBack(this, R.id.btnCancel)
-
-        // Profile pictures are the coloured initials, so the "Edit" next to them has nothing to change
-        allViews(root).filterIsInstance<TextView>()
-            .filter { it.text.toString() == "Edit" && it.id != R.id.btnEditCover }
-            .forEach {
-                it.setOnClickListener {
-                    Toast.makeText(this, "Your picture is made from your initials", Toast.LENGTH_SHORT).show()
+        // Cancel closes. A first-time user cannot leave before they have chosen a username.
+        val cancel = findViewById<View>(R.id.btnCancel)
+        if (setup) {
+            cancel.visibility = View.INVISIBLE
+            findTextExact(root, "Edit profile")?.text = "Set up your profile"
+            onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    Toast.makeText(this@EditProfileActivity, "Choose a username to continue", Toast.LENGTH_SHORT).show()
                 }
-            }
-
-        // Cover photo "Edit" opens the gallery (implicit intent)
-        findViewById<View>(R.id.btnEditCover).setOnClickListener {
-            val intent = Intent()
-            intent.setAction(Intent.ACTION_GET_CONTENT)
-            intent.setType("image/*")
-            pickCoverLauncher.launch(intent)
+            })
+        } else {
+            linkBack(this, R.id.btnCancel)
         }
+
+        // Cover photo "Edit" and the camera button open the gallery
+        findViewById<View>(R.id.btnEditCover).setOnClickListener { pickCover.launch("image/*") }
+        allViews(root).firstOrNull { it.contentDescription == "Change cover photo" }
+            ?.setOnClickListener { pickCover.launch("image/*") }
 
         val saveButton = findViewById<View>(R.id.btnSave)
         saveButton.setOnClickListener {
             val name = nameField.text.toString().trim()
             val bio = bioField.text.toString().trim()
-            val username = usernameField.text.toString().trim().lowercase().replace(" ", "")
+            val username = usernameField.text.toString().trim().lowercase().removePrefix("@")
             val website = websiteField.text.toString().trim()
             if (name.isEmpty()) {
                 Toast.makeText(this, "Your name cannot be empty", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            if (coverLoading) {
-                Toast.makeText(this, "Preparing your cover photo...", Toast.LENGTH_SHORT).show()
+            if (username.isEmpty()) {
+                Toast.makeText(this, "Choose a username", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (preparing > 0) {
+                Toast.makeText(this, "Preparing your photos...", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             saveButton.isEnabled = false
-            Backend.updateProfile(name, bio, username, website) { saved ->
-                if (!saved) {
+            Backend.saveProfile(name, bio, username, website) { error ->
+                if (error != null) {
                     saveButton.isEnabled = true
-                    Toast.makeText(this, "Could not save your profile. Check your connection.", Toast.LENGTH_LONG).show()
-                    return@updateProfile
+                    Toast.makeText(this, error, Toast.LENGTH_LONG).show()
+                    return@saveProfile
                 }
                 Backend.savePrivate(phoneField.text.toString().trim(), genderField.text.toString().trim())
-
-                // Hand them back to the profile screen and close
-                val finishUp = {
-                    val result = Intent()
-                    result.putExtra(EXTRA_NAME, name)
-                    result.putExtra(EXTRA_BIO, bio)
-                    setResult(RESULT_OK, result)
-                    finish()
-                }
-                val cover = newCover
-                if (cover == null) {
-                    finishUp()
-                } else {
-                    Backend.saveCover(cover) { finishUp() }
-                }
+                saveImages { finishUp(name, bio) }
             }
+        }
+    }
+
+    /** Saves the new profile picture and cover photo (if any), then calls [then]. */
+    private fun saveImages(then: () -> Unit) {
+        val avatar = newAvatar
+        val cover = newCover
+        var waiting = 0
+        fun oneDone() {
+            waiting--
+            if (waiting == 0) then()
+        }
+        if (avatar == null && cover == null) {
+            then()
+            return
+        }
+        if (avatar != null) {
+            waiting++
+            Backend.myUid?.let { rememberAvatar(it, avatar) }
+            Backend.saveAvatar(avatar) { oneDone() }
+        }
+        if (cover != null) {
+            waiting++
+            Backend.saveCover(cover) { oneDone() }
+        }
+    }
+
+    private fun finishUp(name: String, bio: String) {
+        if (setup) {
+            // The profile is complete: Home becomes the only screen, so Back from Home leaves the app
+            val intent = Intent(this, HomeActivity::class.java)
+            intent.putExtra(EXTRA_FIRST_NAME, name.substringBefore(' '))
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            startActivity(intent)
+        } else {
+            // Hand them back to the profile screen and close
+            val result = Intent()
+            result.putExtra(EXTRA_NAME, name)
+            result.putExtra(EXTRA_BIO, bio)
+            setResult(RESULT_OK, result)
+            finish()
         }
     }
 }

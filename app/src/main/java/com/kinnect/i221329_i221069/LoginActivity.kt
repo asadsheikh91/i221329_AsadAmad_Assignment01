@@ -25,6 +25,7 @@ class LoginActivity : AppCompatActivity() {
         loginButton = findViewById(R.id.btnLogIn)
 
         showRecentLogin()
+        wirePasswordEye(findViewById(R.id.root), passwordField)
 
         loginButton.setOnClickListener { logIn() }
         linkTo(this, R.id.btnCreateAccount, SignUpActivity::class.java)
@@ -78,9 +79,11 @@ class LoginActivity : AppCompatActivity() {
             editor.putString(KEY_NAME, me?.name)
             editor.apply()
 
-            // Send the first name to Home so it can greet the user
-            val intent = Intent(this, HomeActivity::class.java)
+            // Somebody who never finished the profile setup goes there first; everybody else to Home
+            val target = if (me != null && !me.profileDone) EditProfileActivity::class.java else HomeActivity::class.java
+            val intent = Intent(this, target)
             intent.putExtra(EXTRA_FIRST_NAME, me?.name?.substringBefore(' '))
+            intent.putExtra(EXTRA_SETUP, target == EditProfileActivity::class.java)
             startActivity(intent)
 
             // Log in is not part of the back stack once we are in

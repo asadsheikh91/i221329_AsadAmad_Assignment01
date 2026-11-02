@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Wait 1.5 seconds, then move on. finish() removes the splash from the back stack.
+        // Wait 5 seconds, then move on. finish() removes the splash from the back stack.
         handler.postDelayed({
             if (Backend.isLoggedIn) {
                 openScreen(this, HomeActivity::class.java)
@@ -22,7 +22,11 @@ class MainActivity : AppCompatActivity() {
                 openScreen(this, LoginActivity::class.java)
             }
             finish()
-        }, 1500)
+        }, SPLASH_MS)
+    }
+
+    companion object {
+        private const val SPLASH_MS = 5000L
     }
 
     override fun onDestroy() {

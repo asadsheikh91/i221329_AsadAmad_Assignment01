@@ -18,6 +18,11 @@ class SignUpActivity : AppCompatActivity() {
         linkBack(this, R.id.btnBack)
         linkBack(this, R.id.tvLogIn)
 
+        // The strength bar follows the password while it is typed; the eye shows the password
+        val passwordField = findViewById<EditText>(R.id.etPassword)
+        wirePasswordStrength(findViewById(R.id.root), passwordField)
+        wirePasswordEye(findViewById(R.id.root), passwordField)
+
         val button = findViewById<Button>(R.id.btnCreateAccount)
         button.setOnClickListener {
             val first = findViewById<EditText>(R.id.etFirstName).text.toString().trim()
@@ -41,8 +46,9 @@ class SignUpActivity : AppCompatActivity() {
                         editor.putString(KEY_NAME, Backend.me?.name)
                         editor.apply()
 
-                        // Home becomes the only screen, so Back from Home leaves the app
-                        val intent = Intent(this, HomeActivity::class.java)
+                        // A new user first sets up their profile (unique username and bio), then reaches Home
+                        val intent = Intent(this, EditProfileActivity::class.java)
+                        intent.putExtra(EXTRA_SETUP, true)
                         intent.putExtra(EXTRA_FIRST_NAME, first)
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                         startActivity(intent)
