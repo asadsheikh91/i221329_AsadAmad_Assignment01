@@ -1,0 +1,11 @@
+{
+  "name": "kinnect-functions",
+  "private": true,
+  "description": "Cloud Function that sends a push notification for every request in pushQueue/ (needs the Blaze plan)",
+  "engines": { "node": "20" },
+  "main": "index.js",
+  "dependencies": {
+    "firebase-admin": "^13.0.0",
+    "firebase-functions": "^6.0.0"
+  }
+}
